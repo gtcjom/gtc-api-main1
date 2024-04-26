@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions
+   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   name="PhilhealthLibrary"
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+   xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+   xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+   targetNamespace="http://philhealth.gov.ph"
+   xmlns:tns="http://philhealth.gov.ph"
+>
+   <wsdl:types>
+      <xs:schema targetNamespace="http://philhealth.gov.ph" elementFormDefault="qualified">
+         <xs:complexType name="TPhilhealthResponse">
+            <xs:sequence>
+               <xs:element name="RESPONSE_ID" type="xs:string">
+               </xs:element>
+               <xs:element name="ISOK" type="xs:boolean">
+               </xs:element>
+               <xs:element name="ISNHTS" type="xs:boolean">
+               </xs:element>
+               <xs:element name="WITH3OVER6" type="xs:boolean">
+               </xs:element>
+               <xs:element name="WITH9OVER12" type="xs:boolean">
+               </xs:element>
+               <xs:element name="TRACKING_NUMBER" type="xs:string">
+               </xs:element>
+               <xs:element name="BALANCE_DAYS" type="xs:int">
+               </xs:element>
+               <xs:element name="ASOFDATE" type="xs:dateTime">
+               </xs:element>
+               <xs:element name="PIN" type="xs:string">
+               </xs:element>
+               <xs:element name="MEMBERSHIP_TYPE" type="xs:string">
+               </xs:element>
+               <xs:element name="MEM_LASTNAME" type="xs:string">
+               </xs:element>
+               <xs:element name="MEM_FIRSTNAME" type="xs:string">
+               </xs:element>
+               <xs:element name="MEM_MIDDLENAME" type="xs:string">
+               </xs:element>
+               <xs:element name="MEM_SUFFIX" type="xs:string">
+               </xs:element>
+               <xs:element name="MEM_BIRTHDATE" type="xs:dateTime">
+               </xs:element>
+               <xs:element name="PEN" type="xs:string">
+               </xs:element>
+               <xs:element name="EMPLOYER_NAME" type="xs:string">
+               </xs:element>
+               <xs:element name="PATIENTIS" type="xs:string">
+               </xs:element>
+               <xs:element name="PAT_LASTNAME" type="xs:string">
+               </xs:element>
+               <xs:element name="PAT_FIRSTNAME" type="xs:string">
+               </xs:element>
+               <xs:element name="PAT_MIDDLENAME" type="xs:string">
+               </xs:element>
+               <xs:element name="PAT_SUFFIX" type="xs:string">
+               </xs:element>
+               <xs:element name="PAT_BIRTHDATE" type="xs:dateTime">
+               </xs:element>
+               <xs:element name="DATE_ADMISSION" type="xs:dateTime">
+               </xs:element>
+               <xs:element name="DATE_DISCHARGE" type="xs:dateTime">
+               </xs:element>
+               <xs:element name="PHIC_DOCUMENTS" type="tns:TPhilhealthDocuments">
+               </xs:element>
+               <xs:element name="MAILING_ADDRESS" type="xs:string">
+               </xs:element>
+               <xs:element name="ZIPCODE" type="xs:string">
+               </xs:element>
+               <xs:element name="PAT_GENDER" type="xs:string">
+               </xs:element>
+               <xs:element name="BILL_AMOUNT" type="xs:double">
+               </xs:element>
+               <xs:element name="CLAIM_AMOUNT" type="xs:double">
+               </xs:element>
+               <xs:element name="MEMBER_CATEGORY_ID" type="xs:string">
+               </xs:element>
+               <xs:element name="MEMBER_CATEGORY_DESC" type="xs:string">
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:complexType name="TPhilhealthDocument">
+            <xs:sequence>
+               <xs:element name="DOCUMENT_CODE" type="xs:string">
+               </xs:element>
+               <xs:element name="DESCRIPTION" type="xs:string">
+               </xs:element>
+               <xs:element name="REMARKS" type="xs:string">
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:complexType name="TPhilhealthDocuments">
+            <xs:complexContent>
+               <xs:restriction base="soapenc:Array">
+                  <xs:sequence />
+                  <xs:attribute ref="soapenc:arrayType" n1:arrayType="tns:TPhilhealthDocument[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/" />
+               </xs:restriction>
+            </xs:complexContent>
+         </xs:complexType>
+         <xs:complexType name="PhilhealthException">
+            <xs:sequence>
+               <xs:element name="CODE" type="xs:int">
+               </xs:element>
+               <xs:element name="MESSAGE" type="xs:string">
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+      </xs:schema>
+   </wsdl:types>
+   <wsdl:message name="PhilhealthService___GetServerDateTimeRequest">
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetServerDateTimeResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetServerVersionRequest">
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetServerVersionResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___isClaimEligibleRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pPIN" type="xs:string" />
+      <wsdl:part name="pMemberLastName" type="xs:string" />
+      <wsdl:part name="pMemberFirstName" type="xs:string" />
+      <wsdl:part name="pMemberMiddleName" type="xs:string" />
+      <wsdl:part name="pMemberSuffix" type="xs:string" />
+      <wsdl:part name="pMemberBirthDate" type="xs:string" />
+      <wsdl:part name="pMailingAddress" type="xs:string" />
+      <wsdl:part name="pZipCode" type="xs:string" />
+      <wsdl:part name="pPatientIs" type="xs:string" />
+      <wsdl:part name="pAdmissionDate" type="xs:string" />
+      <wsdl:part name="pDischargeDate" type="xs:string" />
+      <wsdl:part name="pPatientLastName" type="xs:string" />
+      <wsdl:part name="pPatientFirstName" type="xs:string" />
+      <wsdl:part name="pPatientMiddleName" type="xs:string" />
+      <wsdl:part name="pPatientSuffix" type="xs:string" />
+      <wsdl:part name="pPatientBirthDate" type="xs:string" />
+      <wsdl:part name="pPatientGender" type="xs:string" />
+      <wsdl:part name="pMembershipType" type="xs:string" />
+      <wsdl:part name="pPEN" type="xs:string" />
+      <wsdl:part name="pEmployerName" type="xs:string" />
+      <wsdl:part name="pRVS" type="xs:string" />
+      <wsdl:part name="pTotalAmountActual" type="xs:string" />
+      <wsdl:part name="pTotalAmountClaimed" type="xs:string" />
+      <wsdl:part name="pIsFinal" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___isClaimEligibleResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___CheckSinglePeriodRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pPIN" type="xs:string" />
+      <wsdl:part name="pPatientIs" type="xs:string" />
+      <wsdl:part name="pPatientLastName" type="xs:string" />
+      <wsdl:part name="pPatientFirstName" type="xs:string" />
+      <wsdl:part name="pAdmissionDate" type="xs:string" />
+      <wsdl:part name="pPhilhealthClaimType" type="xs:string" />
+      <wsdl:part name="pICDCodes" type="xs:string" />
+      <wsdl:part name="pHighRVSs" type="xs:string" />
+      <wsdl:part name="pCaseRateCode" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___CheckSinglePeriodResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___eClaimsUploadRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pXML" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___eClaimsUploadResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetUploadedClaimsMapRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pReceiptTicketNumber" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetUploadedClaimsMapResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___eClaimsFileCheckRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pXML" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___eClaimsFileCheckResponse">
+      <wsdl:part name="Result" type="xs:boolean" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetMemberPINRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pMemberLastName" type="xs:string" />
+      <wsdl:part name="pMemberFirstName" type="xs:string" />
+      <wsdl:part name="pMemberMiddleName" type="xs:string" />
+      <wsdl:part name="pMemberSuffix" type="xs:string" />
+      <wsdl:part name="pMemberBirthDate" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetMemberPINResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetDoctorPANRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pDoctorTIN" type="xs:string" />
+      <wsdl:part name="pDoctorLastName" type="xs:string" />
+      <wsdl:part name="pDoctorFirstName" type="xs:string" />
+      <wsdl:part name="pDoctorMiddleName" type="xs:string" />
+      <wsdl:part name="pDoctorSuffix" type="xs:string" />
+      <wsdl:part name="pDoctorBirthdate" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetDoctorPANResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___isDoctorAccreditedRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pDoctorAccreCode" type="xs:string" />
+      <wsdl:part name="pAdmissionDate" type="xs:string" />
+      <wsdl:part name="pDischargeDate" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___isDoctorAccreditedResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetClaimStatusRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pSeriesLhioNos" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetClaimStatusResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetVoucherDetailsRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pVoucherNo" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetVoucherDetailsResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___addRequiredDocumentRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pSeriesLhioNo" type="xs:string" />
+      <wsdl:part name="pXML" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___addRequiredDocumentResponse">
+      <wsdl:part name="Result" type="xs:boolean" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___SearchMemberRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pApplicationName" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pPIN" type="xs:string" />
+      <wsdl:part name="pMemberLastName" type="xs:string" />
+      <wsdl:part name="pMemberFirstName" type="xs:string" />
+      <wsdl:part name="pMemberMiddleName" type="xs:string" />
+      <wsdl:part name="pMemberSuffix" type="xs:string" />
+      <wsdl:part name="pMemberBirthDate" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___SearchMemberResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetDependentsRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pApplicationName" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pPIN" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetDependentsResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___EnrollMemberRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pApplicationName" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pPIN" type="xs:string" />
+      <wsdl:part name="pAdmissionDate" type="xs:string" />
+      <wsdl:part name="pHospitalUserID" type="xs:string" />
+      <wsdl:part name="pIsAbandoned" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___EnrollMemberResponse">
+      <wsdl:part name="Result" type="xs:boolean" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___SearchHospitalRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pHospitalName" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___SearchHospitalResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___SearchCaseRateRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pICD" type="xs:string" />
+      <wsdl:part name="pRVS" type="xs:string" />
+      <wsdl:part name="pDescription" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___SearchCaseRateResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___isClaimEligible2Request">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pMemberPIN" type="xs:string" />
+      <wsdl:part name="pMemberLastName" type="xs:string" />
+      <wsdl:part name="pMemberFirstName" type="xs:string" />
+      <wsdl:part name="pMemberMiddleName" type="xs:string" />
+      <wsdl:part name="pMemberSuffix" type="xs:string" />
+      <wsdl:part name="pMemberBirthDate" type="xs:string" />
+      <wsdl:part name="pMemberSex" type="xs:string" />
+      <wsdl:part name="pMailingAddress" type="xs:string" />
+      <wsdl:part name="pZipCode" type="xs:string" />
+      <wsdl:part name="pPatientIs" type="xs:string" />
+      <wsdl:part name="pAdmissionDate" type="xs:string" />
+      <wsdl:part name="pDischargeDate" type="xs:string" />
+      <wsdl:part name="pPatientLastName" type="xs:string" />
+      <wsdl:part name="pPatientFirstName" type="xs:string" />
+      <wsdl:part name="pPatientMiddleName" type="xs:string" />
+      <wsdl:part name="pPatientSuffix" type="xs:string" />
+      <wsdl:part name="pPatientBirthDate" type="xs:string" />
+      <wsdl:part name="pPatientSex" type="xs:string" />
+      <wsdl:part name="pMembershipType" type="xs:string" />
+      <wsdl:part name="pPEN" type="xs:string" />
+      <wsdl:part name="pEmployerName" type="xs:string" />
+      <wsdl:part name="pIsFinal" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___isClaimEligible2Response">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___SearchEmployerRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pPEN" type="xs:string" />
+      <wsdl:part name="pEmployerName" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___SearchEmployerResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___CheckWSRequest">
+      <wsdl:part name="X" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___CheckWSResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetDbServerDateTimeRequest">
+   </wsdl:message>
+   <wsdl:message name="PhilhealthService___GetDbServerDateTimeResponse">
+      <wsdl:part name="Result" type="xs:dateTime" />
+   </wsdl:message>
+   <wsdl:message name="MMHRService___eMMHRUploadRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pTargetYear" type="xs:string" />
+      <wsdl:part name="pTargetMonth" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pXML" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="MMHRService___eMMHRUploadResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="MMHRService___eMMHRFileCheckRequest">
+      <wsdl:part name="pUserName" type="xs:string" />
+      <wsdl:part name="pUserPassword" type="xs:string" />
+      <wsdl:part name="pHospitalCode" type="xs:string" />
+      <wsdl:part name="pXML" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="MMHRService___eMMHRFileCheckResponse">
+      <wsdl:part name="Result" type="xs:boolean" />
+   </wsdl:message>
+   <wsdl:message name="InternalService___CheckContributionRequest">
+      <wsdl:part name="aAuthority" type="xs:string" />
+      <wsdl:part name="aPIN" type="xs:string" />
+      <wsdl:part name="aMemType" type="xs:string" />
+      <wsdl:part name="aTargetDate" type="xs:string" />
+   </wsdl:message>
+   <wsdl:message name="InternalService___CheckContributionResponse">
+      <wsdl:part name="Result" type="xs:string" />
+   </wsdl:message>
+   <wsdl:portType name="PhilhealthService">
+      <wsdl:operation name="GetServerDateTime">
+      <wsdl:documentation>
+      returns the server datetime in mm/dd/yyyy hh:mm:ss AM/PM format
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___GetServerDateTimeRequest" />
+         <wsdl:output message="tns:PhilhealthService___GetServerDateTimeResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="GetServerVersion">
+      <wsdl:documentation>
+      returns the version name of the eclaims web service.
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___GetServerVersionRequest" />
+         <wsdl:output message="tns:PhilhealthService___GetServerVersionResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="isClaimEligible">
+      <wsdl:documentation>
+      Returns the eligibility of a member/dependent.
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___isClaimEligibleRequest" />
+         <wsdl:output message="tns:PhilhealthService___isClaimEligibleResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="CheckSinglePeriod">
+      <wsdl:documentation>
+      Returns the single period of confinement, based on the parameters passed.
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___CheckSinglePeriodRequest" />
+         <wsdl:output message="tns:PhilhealthService___CheckSinglePeriodResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="eClaimsUpload">
+      <wsdl:documentation>
+      uploads the xml to the eclaims.
+valid eclaims xmls will result to an xml response, otherwise throws an exception.
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___eClaimsUploadRequest" />
+         <wsdl:output message="tns:PhilhealthService___eClaimsUploadResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="GetUploadedClaimsMap">
+      <wsdl:documentation>
+      gets the mapping of philhealth claim series number against the hospital claim number.
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___GetUploadedClaimsMapRequest" />
+         <wsdl:output message="tns:PhilhealthService___GetUploadedClaimsMapResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="eClaimsFileCheck">
+      <wsdl:documentation>
+      checks the xml compliance to the eclaims standards.
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___eClaimsFileCheckRequest" />
+         <wsdl:output message="tns:PhilhealthService___eClaimsFileCheckResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="GetMemberPIN">
+      <wsdl:documentation>
+      returns the pin from the parameters provided. throws an exception if no/multiple pin
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___GetMemberPINRequest" />
+         <wsdl:output message="tns:PhilhealthService___GetMemberPINResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="GetDoctorPAN">
+      <wsdl:documentation>
+      not yet implemented
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___GetDoctorPANRequest" />
+         <wsdl:output message="tns:PhilhealthService___GetDoctorPANResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="isDoctorAccredited">
+      <wsdl:documentation>
+      returns whether doctor/professional is accredited.
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___isDoctorAccreditedRequest" />
+         <wsdl:output message="tns:PhilhealthService___isDoctorAccreditedResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="GetClaimStatus">
+      <wsdl:documentation>
+      returns the status of a claim.
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___GetClaimStatusRequest" />
+         <wsdl:output message="tns:PhilhealthService___GetClaimStatusResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="GetVoucherDetails">
+      <wsdl:documentation>
+      returns the voucher information in xml. this can be used reconcile claims records.
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___GetVoucherDetailsRequest" />
+         <wsdl:output message="tns:PhilhealthService___GetVoucherDetailsResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="addRequiredDocument">
+      <wsdl:documentation>
+      Method for submitting additional required documents.
+usually this is done after the status was tagged as pending and the
+RTH letter was sent through email.
+      </wsdl:documentation>
+         <wsdl:input message="tns:PhilhealthService___addRequiredDocumentRequest" />
+         <wsdl:output message="tns:PhilhealthService___addRequiredDocumentResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="SearchMember">
+         <wsdl:input message="tns:PhilhealthService___SearchMemberRequest" />
+         <wsdl:output message="tns:PhilhealthService___SearchMemberResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="GetDependents">
+         <wsdl:input message="tns:PhilhealthService___GetDependentsRequest" />
+         <wsdl:output message="tns:PhilhealthService___GetDependentsResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="EnrollMember">
+         <wsdl:input message="tns:PhilhealthService___EnrollMemberRequest" />
+         <wsdl:output message="tns:PhilhealthService___EnrollMemberResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="SearchHospital">
+         <wsdl:input message="tns:PhilhealthService___SearchHospitalRequest" />
+         <wsdl:output message="tns:PhilhealthService___SearchHospitalResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="SearchCaseRate">
+         <wsdl:input message="tns:PhilhealthService___SearchCaseRateRequest" />
+         <wsdl:output message="tns:PhilhealthService___SearchCaseRateResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="isClaimEligible2">
+         <wsdl:input message="tns:PhilhealthService___isClaimEligible2Request" />
+         <wsdl:output message="tns:PhilhealthService___isClaimEligible2Response" />
+      </wsdl:operation>
+      <wsdl:operation name="SearchEmployer">
+         <wsdl:input message="tns:PhilhealthService___SearchEmployerRequest" />
+         <wsdl:output message="tns:PhilhealthService___SearchEmployerResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="CheckWS">
+         <wsdl:input message="tns:PhilhealthService___CheckWSRequest" />
+         <wsdl:output message="tns:PhilhealthService___CheckWSResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="GetDbServerDateTime">
+         <wsdl:input message="tns:PhilhealthService___GetDbServerDateTimeRequest" />
+         <wsdl:output message="tns:PhilhealthService___GetDbServerDateTimeResponse" />
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:portType name="MMHRService">
+      <wsdl:operation name="eMMHRUpload">
+         <wsdl:input message="tns:MMHRService___eMMHRUploadRequest" />
+         <wsdl:output message="tns:MMHRService___eMMHRUploadResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="eMMHRFileCheck">
+         <wsdl:input message="tns:MMHRService___eMMHRFileCheckRequest" />
+         <wsdl:output message="tns:MMHRService___eMMHRFileCheckResponse" />
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:portType name="InternalService">
+      <wsdl:operation name="CheckContribution">
+         <wsdl:input message="tns:InternalService___CheckContributionRequest" />
+         <wsdl:output message="tns:InternalService___CheckContributionResponse" />
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="PhilhealthServiceBinding" type="tns:PhilhealthService">
+      <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+         <wsdl:operation name="GetServerDateTime">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#GetServerDateTime" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="GetServerVersion">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#GetServerVersion" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="isClaimEligible">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#isClaimEligible" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="CheckSinglePeriod">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#CheckSinglePeriod" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="eClaimsUpload">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#eClaimsUpload" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="GetUploadedClaimsMap">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#GetUploadedClaimsMap" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="eClaimsFileCheck">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#eClaimsFileCheck" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="GetMemberPIN">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#GetMemberPIN" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="GetDoctorPAN">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#GetDoctorPAN" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="isDoctorAccredited">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#isDoctorAccredited" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="GetClaimStatus">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#GetClaimStatus" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="GetVoucherDetails">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#GetVoucherDetails" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="addRequiredDocument">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#addRequiredDocument" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="SearchMember">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#SearchMember" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="GetDependents">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#GetDependents" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="EnrollMember">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#EnrollMember" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="SearchHospital">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#SearchHospital" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="SearchCaseRate">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#SearchCaseRate" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="isClaimEligible2">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#isClaimEligible2" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="SearchEmployer">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#SearchEmployer" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="CheckWS">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#CheckWS" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="GetDbServerDateTime">
+            <soap:operation soapAction="urn:PhilhealthLibrary-PhilhealthService#GetDbServerDateTime" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-PhilhealthService" />
+            </wsdl:output>
+         </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="MMHRServiceBinding" type="tns:MMHRService">
+      <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+         <wsdl:operation name="eMMHRUpload">
+            <soap:operation soapAction="urn:PhilhealthLibrary-MMHRService#eMMHRUpload" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-MMHRService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-MMHRService" />
+            </wsdl:output>
+         </wsdl:operation>
+         <wsdl:operation name="eMMHRFileCheck">
+            <soap:operation soapAction="urn:PhilhealthLibrary-MMHRService#eMMHRFileCheck" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-MMHRService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-MMHRService" />
+            </wsdl:output>
+         </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:binding name="InternalServiceBinding" type="tns:InternalService">
+      <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+         <wsdl:operation name="CheckContribution">
+            <soap:operation soapAction="urn:PhilhealthLibrary-InternalService#CheckContribution" style="rpc" />
+            <wsdl:input>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-InternalService" />
+            </wsdl:input>
+            <wsdl:output>
+               <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PhilhealthLibrary-InternalService" />
+            </wsdl:output>
+         </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="PhilhealthService">
+      <xs:annotation>
+         <xs:documentation>
+         Service PhilhealthService. This service has been automatically generated using the RODL template you can find in the Templates directory.
+         </xs:documentation>
+      </xs:annotation>
+      <wsdl:port name="PhilhealthServicePort" binding="tns:PhilhealthServiceBinding">
+         <soap:address location="https://210.4.103.170:8077/soap?service=PhilhealthService" />
+      </wsdl:port>
+   </wsdl:service>
+   <wsdl:service name="MMHRService">
+      <wsdl:port name="MMHRServicePort" binding="tns:MMHRServiceBinding">
+         <soap:address location="https://210.4.103.170:8077/soap?service=MMHRService" />
+      </wsdl:port>
+   </wsdl:service>
+   <wsdl:service name="InternalService">
+      <wsdl:port name="InternalServicePort" binding="tns:InternalServiceBinding">
+         <soap:address location="https://210.4.103.170:8077/soap?service=InternalService" />
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>
