@@ -716,11 +716,8 @@ class ReferToRHUController extends Controller
 
         $appointment->for_lab = 0;
         // $appointment->referred_to = $request->get('doctor_id');
-        $appointment->hemoglobin = $request->get('hemoglobin');
-        $appointment->hematocrit = $request->get('hematocrit');
-        $appointment->rcbc = $request->get('rcbc');
-        $appointment->wbc = $request->get('wbc');
 
+        //chemistry
         $appointment->fbs = $request->get('fbs');
         $appointment->rbs = $request->get('rbs');
         $appointment->creatinine = $request->get('creatinine');
@@ -733,36 +730,29 @@ class ReferToRHUController extends Controller
         $appointment->magnesium = $request->get('magnesium');
         $appointment->phophorus = $request->get('phophorus');
         $appointment->amylase = $request->get('amylase');
-
         $appointment->csir_specimen_type = $request->get('csir_specimen_type');
         $appointment->csir_specimen_source = $request->get('csir_specimen_source');
         $appointment->csir_result = $request->get('csir_result');
         $appointment->csir_remarks = $request->get('csir_remarks');
-
         $appointment->cholesterol = $request->get('cholesterol');
         $appointment->triglyceride = $request->get('triglyceride');
         $appointment->hdl = $request->get('hdl');
         $appointment->ldl = $request->get('ldl');
         $appointment->hbac = $request->get('hbac');
-
         $appointment->sodium = $request->get('sodium');
         $appointment->potassium = $request->get('potassium');
         $appointment->calcium_total = $request->get('calcium_total');
         $appointment->calcium_ionized = $request->get('calcium_ionized');
         $appointment->ph = $request->get('ph');
         $appointment->chloride = $request->get('chloride');
-
         $appointment->total_bilirubin = $request->get('total_bilirubin');
         $appointment->direct_bilirubin = $request->get('direct_bilirubin');
         $appointment->indirect_bilirubin = $request->get('indirect_bilirubin');
-
         $appointment->total_protein = $request->get('total_protein');
         $appointment->albumin = $request->get('albumin');
         $appointment->globulin = $request->get('globulin');
         $appointment->ag_ratio = $request->get('ag_ratio');
-
         $appointment->urea = $request->get('urea');
-
         $appointment->glucose_load = $request->get('glucose_load');
         $appointment->blood_fbs = $request->get('blood_fbs');
         $appointment->blood_first_hour = $request->get('blood_first_hour');
@@ -774,12 +764,147 @@ class ReferToRHUController extends Controller
         $appointment->urine_third_hour = $request->get('urine_third_hour');
         $appointment->gogct_result = $request->get('gogct_result');
         $appointment->ogtt_remark = $request->get('ogtt_remark');
-
         $appointment->hour_urine_volume = $request->get('hour_urine_volume');
         $appointment->serum_creatinine = $request->get('serum_creatinine');
         $appointment->urine_creatinine = $request->get('urine_creatinine');
         $appointment->hours_urine = $request->get('hours_urine');
         $appointment->creatinine_clearance = $request->get('creatinine_clearance');
+        //hematology
+        $appointment->hemoglobin = $request->get('hemoglobin');
+        $appointment->hematocrit = $request->get('hematocrit');
+        $appointment->rcbc = $request->get('rcbc');
+        $appointment->wbc = $request->get('wbc');
+        $appointment->mcv_hematology = $request->get('mcv_hematology');
+        $appointment->mch_hematology = $request->get('mch_hematology');
+        $appointment->mchc_hematology = $request->get('mchc_hematology');
+        $appointment->erythrocyte_arte_hematology = $request->get('erythrocyte_arte_hematology');
+        $appointment->neutrophils_hematology = $request->get('neutrophils_hematology');
+        $appointment->lymphocytes_hematology = $request->get('lymphocytes_hematology');
+        $appointment->monocytes_hematology = $request->get('monocytes_hematology');
+        $appointment->eosinophils_hematology = $request->get('eosinophils_hematology');
+        $appointment->basophils_hematology = $request->get('basophils_hematology');
+        $appointment->platelet_count_hematology = $request->get('platelet_count_hematology');
+        $appointment->clotting_time_hematology = $request->get('clotting_time_hematology');
+        $appointment->bleeding_time_hematology = $request->get('bleeding_time_hematology');
+        $appointment->reticulocyte_count_hematology = $request->get('reticulocyte_count_hematology');
+        $appointment->pt_protime_hematology = $request->get('pt_protime_hematology');
+        $appointment->control_protime_hematology = $request->get('control_protime_hematology');
+        $appointment->activity_protime_hematology = $request->get('activity_protime_hematology');
+        $appointment->ptt_aptt_hematology = $request->get('ptt_aptt_hematology');
+        $appointment->control_aptt_hematology = $request->get('control_aptt_hematology');
+        $appointment->ratio_aptt_hematology = $request->get('ratio_aptt_hematology');
+        $appointment->inr_hematology = $request->get('inr_hematology');
+        //microbiology
+        $appointment->specimen_microbiology = $request->get('specimen_microbiology');
+        $appointment->source_microbiology = $request->get('source_microbiology');
+        $appointment->result_microbiology = $request->get('result_microbiology');
+        $appointment->culture_isolate = $request->get('culture_isolate');
+        $appointment->sensitive = $request->get('sensitive');
+        $appointment->resistant = $request->get('resistant');
+        $appointment->intermediate = $request->get('intermediate');
+        $appointment->specimen_gram = $request->get('specimen_gram');
+        $appointment->result_gram = $request->get('result_gram');
+        $appointment->epithelial_cells = $request->get('epithelial_cells');
+        $appointment->polymorphonuclears = $request->get('polymorphonuclears');
+        $appointment->remarks_gram = $request->get('remarks_gram');
+        $appointment->specimen_afb = $request->get('specimen_afb');
+        $appointment->result_afb = $request->get('result_afb');
+        $appointment->remarks_afb = $request->get('remarks_afb');
+        $appointment->specimen_koh = $request->get('specimen_koh');
+        $appointment->result_koh = $request->get('result_koh');
+        $appointment->remarks_koh = $request->get('remarks_koh');
+        //microscopy
+        $appointment->color_fecalysis = $request->get('color_fecalysis');
+        $appointment->consistency_fecalysis = $request->get('consistency_fecalysis');
+        $appointment->rbc_fecalysis = $request->get('rbc_fecalysis');
+        $appointment->wbc_fecalysis = $request->get('wbc_fecalysis');
+        $appointment->fat_globules_fecalysis = $request->get('fat_globules_fecalysis');
+        $appointment->yeast_cells_fecalysis = $request->get('yeast_cells_fecalysis');
+        $appointment->fecal_occult_blood_fecalysis = $request->get('fecal_occult_blood_fecalysis');
+        $appointment->ascaris_lumbricoides = $request->get('ascaris_lumbricoides');
+        $appointment->triciuris_trichiura = $request->get('triciuris_trichiura');
+        $appointment->hookworm = $request->get('hookworm');
+        $appointment->entamoeba_histolytica_cyst = $request->get('entamoeba_histolytica_cyst');
+        $appointment->entamoeba_histolytica_trophozoite = $request->get('entamoeba_histolytica_trophozoite');
+        $appointment->entamoeba_coli_cyst = $request->get('entamoeba_coli_cyst');
+        $appointment->entamoeba_coli_trophozoite = $request->get('entamoeba_coli_trophozoite');
+        $appointment->giardia_lamblia_cyst = $request->get('giardia_lamblia_cyst');
+        $appointment->giardia_lamblia_trophozoite = $request->get('giardia_lamblia_trophozoite');
+
+        $appointment->color_urine = $request->get('color_urine');
+        $appointment->transparency_urine = $request->get('transparency_urine');
+        $appointment->reaction_urine = $request->get('reaction_urine');
+        $appointment->gravity_urine = $request->get('gravity_urine');
+        $appointment->glucose_urine = $request->get('glucose_urine');
+        $appointment->protein_urine = $request->get('protein_urine');
+        $appointment->wbc_urine = $request->get('wbc_urine');
+        $appointment->rbc_urine = $request->get('rbc_urine');
+        $appointment->epithelial_cells_urine = $request->get('epithelial_cells_urine');
+        $appointment->bacteria_urine = $request->get('bacteria_urine');
+        $appointment->mucus_thread_urine = $request->get('mucus_thread_urine');
+        $appointment->amorphous_urates_urine = $request->get('amorphous_urates_urine');
+        $appointment->amorphous_phosphates_urine = $request->get('amorphous_phosphates_urine');
+        $appointment->calciun_oxalates_urine = $request->get('calciun_oxalates_urine');
+        $appointment->triple_phosphates_urine = $request->get('triple_phosphates_urine');
+        $appointment->uric_acid_urine = $request->get('uric_acid_urine');
+        $appointment->others_urine = $request->get('others_urine');
+        $appointment->hyaline_cast_urine = $request->get('hyaline_cast_urine');
+        $appointment->wbc_cast_urine = $request->get('wbc_cast_urine');
+        $appointment->rbc_cast_urine = $request->get('rbc_cast_urine');
+        $appointment->granular_cast_urine = $request->get('granular_cast_urine');
+        //serology
+        $appointment->hbsag = $request->get('hbsag');
+        $appointment->anti_hbs = $request->get('anti_hbs');
+        $appointment->anti_hcv = $request->get('anti_hcv');
+        $appointment->syphilis = $request->get('syphilis');
+        $appointment->aso = $request->get('aso');
+        $appointment->ra_rf = $request->get('ra_rf');
+        $appointment->crp = $request->get('crp');
+        $appointment->troponin = $request->get('troponin');
+        $appointment->ck_mb = $request->get('ck_mb');
+        $appointment->salmonella_typhi_h = $request->get('salmonella_typhi_h');
+        $appointment->salmonella_typhi_ah = $request->get('salmonella_typhi_ah');
+        $appointment->salmonella_typhi_bh = $request->get('salmonella_typhi_bh');
+        $appointment->salmonella_typhi_ch = $request->get('salmonella_typhi_ch');
+        $appointment->salmonella_paratyphi_o = $request->get('salmonella_paratyphi_o');
+        $appointment->salmonella_paratyphi_ao = $request->get('salmonella_paratyphi_ao');
+        $appointment->salmonella_paratyphi_bo = $request->get('salmonella_paratyphi_bo');
+        $appointment->salmonella_typhi_co = $request->get('salmonella_typhi_co');
+        $appointment->ns_dengue = $request->get('ns_dengue');
+        $appointment->igg_dengue = $request->get('igg_dengue');
+        $appointment->igm_dengue = $request->get('igm_dengue');
+        $appointment->igg_typhoid = $request->get('igg_typhoid');
+        $appointment->igm_typhoid = $request->get('igm_typhoid');
+
+        //pregnancy
+        $appointment->specimen_pregnancy_test = $request->get('specimen_pregnancy_test');
+        $appointment->result_pregnancy_test = $request->get('result_pregnancy_test');
+
+        $appointment->blood_typing = $request->get('blood_typing');
+
+        $appointment->type_specimen = $request->get('type_specimen');
+        $appointment->test_kit = $request->get('test_kit');
+        $appointment->method = $request->get('method');
+        $appointment->result = $request->get('result');
+        $appointment->value = $request->get('value');
+
+        $appointment->blood_type_crossmatch = $request->get('blood_type_crossmatch');
+        $appointment->method_crossmatch = $request->get('method_crossmatch');
+        $appointment->serial_number_crossmatch = $request->get('serial_number_crossmatch');
+        $appointment->donor_blood_type = $request->get('donor_blood_type');
+        $appointment->source_crossmatch = $request->get('source_crossmatch');
+        $appointment->component_crossmatch = $request->get('component_crossmatch');
+        $appointment->content_crossmatch = $request->get('content_crossmatch');
+        $appointment->extract_date_crossmatch = $request->get('extract_date_crossmatch');
+        $appointment->expiry_date_crossmatch = $request->get('expiry_date_crossmatch');
+        $appointment->cossmatching_result_crossmatch = $request->get('cossmatching_result_crossmatch');
+
+        $appointment->rhu_ultrasound_result = $request->get('rhu_ultrasound_result');
+        $appointment->rhu_ultrasound_remarks = $request->get('rhu_ultrasound_remarks');
+        $appointment->rhu_xray_result = $request->get('rhu_xray_result');
+        $appointment->rhu_xray_remarks = $request->get('rhu_xray_remarks');
+
+
 
         $appointment->lab_result_by = $user->id;
         $appointment->save();
