@@ -62,7 +62,7 @@ class ReferToRHUController extends Controller
             'message' => 'Patient referred to RHU'
         ]);
     }
-    public function acceptPatient(string $id, Request $request,PmrfPatientService $pmrfPatientService, PhoPatientCaseService $service)
+    public function acceptPatient(string $id, Request $request, PmrfPatientService $pmrfPatientService, PhoPatientCaseService $service)
     {
         $user = request()->user();
 
@@ -89,7 +89,7 @@ class ReferToRHUController extends Controller
                 'pmrf_status' => 'done'
             ]);
 
-            if($cloud['total_count'] < 1){
+            if ($cloud['total_count'] < 1) {
 
                 return response()->json([
                     'message' => 'Patient not found not done yet'
@@ -103,7 +103,7 @@ class ReferToRHUController extends Controller
         }
 
 
-        $vitals = $localCase->vitals ? json_decode($localCase->vitals)[0]: [];
+        $vitals = $localCase->vitals ? json_decode($localCase->vitals)[0] : [];
 
 
         $vital = new Vital();
@@ -136,22 +136,22 @@ class ReferToRHUController extends Controller
 
 
 
-//
-//        $referral_data = [
-//            'patient_cloud_id' => $patient_cloud_id,
-//            'doctor_id' => $request->get('doctor_id'),
-//            'date' => $request->get('date'),
-//            'time' => $request->get('time'),
-//            'chief_complaint' => $request->get('pre_notes'),
-//            'reason_for_referral' => $request->get('reason'),
-//            'clinical_history' => $request->get('clinical_history'),
-//            'lab_findings' => $request->get('lab_findings'),
-//            'impression' => $request->get('impression'),
-//            'action_taken' => $request->get('action_taken'),
-//            'health_insurrance_coverage' => $request->get('health_insurrance_coverage'),
-//            'health_insurrance_coverage_if_yes_type' => $request->get('health_insurrance_coverage_if_yes_type'),
-//            'referred_by' => request()->user()->id->name ?? "",
-//        ]
+        //
+        //        $referral_data = [
+        //            'patient_cloud_id' => $patient_cloud_id,
+        //            'doctor_id' => $request->get('doctor_id'),
+        //            'date' => $request->get('date'),
+        //            'time' => $request->get('time'),
+        //            'chief_complaint' => $request->get('pre_notes'),
+        //            'reason_for_referral' => $request->get('reason'),
+        //            'clinical_history' => $request->get('clinical_history'),
+        //            'lab_findings' => $request->get('lab_findings'),
+        //            'impression' => $request->get('impression'),
+        //            'action_taken' => $request->get('action_taken'),
+        //            'health_insurrance_coverage' => $request->get('health_insurrance_coverage'),
+        //            'health_insurrance_coverage_if_yes_type' => $request->get('health_insurrance_coverage_if_yes_type'),
+        //            'referred_by' => request()->user()->id->name ?? "",
+        //        ]
 
 
         $appointment = new AppointmentData();
@@ -169,7 +169,7 @@ class ReferToRHUController extends Controller
         $appointment->clinical_history = $referral_data['clinical_history'];
         $appointment->pre_notes = $referral_data['chief_complaint'];
         $appointment->reason = $referral_data['reason_for_referral'];
-        $appointment->referred_by_name =$referral_data['referred_by'];
+        $appointment->referred_by_name = $referral_data['referred_by'];
         $appointment->patient_selfie = $localCase->case_picture;
 
 
@@ -720,6 +720,67 @@ class ReferToRHUController extends Controller
         $appointment->hematocrit = $request->get('hematocrit');
         $appointment->rcbc = $request->get('rcbc');
         $appointment->wbc = $request->get('wbc');
+
+        $appointment->fbs = $request->get('fbs');
+        $appointment->rbs = $request->get('rbs');
+        $appointment->creatinine = $request->get('creatinine');
+        $appointment->uric_acid = $request->get('uric_acid');
+        $appointment->sgot = $request->get('sgot');
+        $appointment->sgpt = $request->get('sgpt');
+        $appointment->alkaline_phos = $request->get('alkaline_phos');
+        $appointment->ldh = $request->get('ldh');
+        $appointment->ggt = $request->get('ggt');
+        $appointment->magnesium = $request->get('magnesium');
+        $appointment->phophorus = $request->get('phophorus');
+        $appointment->amylase = $request->get('amylase');
+
+        $appointment->csir_specimen_type = $request->get('csir_specimen_type');
+        $appointment->csir_specimen_source = $request->get('csir_specimen_source');
+        $appointment->csir_result = $request->get('csir_result');
+        $appointment->csir_remarks = $request->get('csir_remarks');
+
+        $appointment->cholesterol = $request->get('cholesterol');
+        $appointment->triglyceride = $request->get('triglyceride');
+        $appointment->hdl = $request->get('hdl');
+        $appointment->ldl = $request->get('ldl');
+        $appointment->hbac = $request->get('hbac');
+
+        $appointment->sodium = $request->get('sodium');
+        $appointment->potassium = $request->get('potassium');
+        $appointment->calcium_total = $request->get('calcium_total');
+        $appointment->calcium_ionized = $request->get('calcium_ionized');
+        $appointment->ph = $request->get('ph');
+        $appointment->chloride = $request->get('chloride');
+
+        $appointment->total_bilirubin = $request->get('total_bilirubin');
+        $appointment->direct_bilirubin = $request->get('direct_bilirubin');
+        $appointment->indirect_bilirubin = $request->get('indirect_bilirubin');
+
+        $appointment->total_protein = $request->get('total_protein');
+        $appointment->albumin = $request->get('albumin');
+        $appointment->globulin = $request->get('globulin');
+        $appointment->ag_ratio = $request->get('ag_ratio');
+
+        $appointment->urea = $request->get('urea');
+
+        $appointment->glucose_load = $request->get('glucose_load');
+        $appointment->blood_fbs = $request->get('blood_fbs');
+        $appointment->blood_first_hour = $request->get('blood_first_hour');
+        $appointment->blood_second_hour = $request->get('blood_second_hour');
+        $appointment->blood_third_hour = $request->get('blood_third_hour');
+        $appointment->urine_fasting = $request->get('urine_fasting');
+        $appointment->urine_first_hour = $request->get('urine_first_hour');
+        $appointment->urine_second_hour = $request->get('urine_second_hour');
+        $appointment->urine_third_hour = $request->get('urine_third_hour');
+        $appointment->gogct_result = $request->get('gogct_result');
+        $appointment->ogtt_remark = $request->get('ogtt_remark');
+
+        $appointment->hour_urine_volume = $request->get('hour_urine_volume');
+        $appointment->serum_creatinine = $request->get('serum_creatinine');
+        $appointment->urine_creatinine = $request->get('urine_creatinine');
+        $appointment->hours_urine = $request->get('hours_urine');
+        $appointment->creatinine_clearance = $request->get('creatinine_clearance');
+
         $appointment->lab_result_by = $user->id;
         $appointment->save();
 
@@ -746,23 +807,23 @@ class ReferToRHUController extends Controller
         $fullname = preg_replace('/\s+/', ' ', $fullname);
         $patient_cloud_id = $patient->cloud_id;
         $patientSelfie = null;
-        if($request->hasFile('patientSelfie')){
+        if ($request->hasFile('patientSelfie')) {
             $patientSelfie = $request->file('patientSelfie')->store('patientSelfies');
         }
 
 
 
-//        if (!$patient_cloud_id) {
-//
-//            $cloudResult = $service->createPatient($patient->id);
-//            if (!$cloudResult['success']) {
-//                return response()->json([
-//                    'message' => 'Failed to connect to cloud'
-//                ], 500);
-//            }
-//            $patient->refresh();
-//            $patient_cloud_id = $patient->cloud_id;
-//        }
+        //        if (!$patient_cloud_id) {
+        //
+        //            $cloudResult = $service->createPatient($patient->id);
+        //            if (!$cloudResult['success']) {
+        //                return response()->json([
+        //                    'message' => 'Failed to connect to cloud'
+        //                ], 500);
+        //            }
+        //            $patient->refresh();
+        //            $patient_cloud_id = $patient->cloud_id;
+        //        }
 
         try {
             DB::beginTransaction();
