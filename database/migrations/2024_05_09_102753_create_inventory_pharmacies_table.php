@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('laboratory_tests', function (Blueprint $table) {
+        Schema::create('inventory_pharmacies', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description');
-            $table->string('type');
+            $table->date('pharmacy_date')->nullable();
+            $table->string('pharmacy_supplies')->nullable();
+            $table->string('pharmacy_quantity')->nullable();
+            $table->string('pharmacy_status')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('laboratory_tests');
+        Schema::dropIfExists('inventory_pharmacies');
     }
 };

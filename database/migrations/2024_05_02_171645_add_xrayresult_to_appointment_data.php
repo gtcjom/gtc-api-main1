@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::table('appointment_data', function (Blueprint $table) {
             //
-            $table->string('rhu_xray_result', 10)->default(null)->nullable();
-            $table->string('rhu_xray_remarks', 10)->default(null)->nullable();
+            // $table->string('rhu_xray_result', 10)->default(null)->nullable();
+            // $table->string('rhu_xray_remarks', 10)->default(null)->nullable();
         });
     }
 
@@ -29,8 +29,8 @@ return new class extends Migration
     {
         Schema::table('appointment_data', function (Blueprint $table) {
             //
-            $table->dropColumn('rhu_xray_result');
-            $table->dropColumn('rhu_xray_remarks');
+            // $table->dropColumn('rhu_xray_result');
+            // $table->dropColumn('rhu_xray_remarks');
         });
     }
 };

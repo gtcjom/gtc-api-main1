@@ -12,6 +12,7 @@ class LaboratoryTest extends Model
 	protected $fillable = [
 		'name',
 		'type',
-		'description'
+		'description',
+        'lab_rate'
 	];
 }

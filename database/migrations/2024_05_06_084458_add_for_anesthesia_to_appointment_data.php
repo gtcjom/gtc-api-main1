@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('laboratory_tests', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('description');
-            $table->string('type');
-            $table->timestamps();
+        Schema::table('appointment_data', function (Blueprint $table) {
+            //
+             $table->boolean('for_anesthesia')->default(0);
         });
     }
 
@@ -29,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('laboratory_tests');
+        Schema::table('appointment_data', function (Blueprint $table) {
+            //
+             $table->dropColumn('for_anesthesia');
+        });
     }
 };

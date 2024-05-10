@@ -60,6 +60,10 @@ class AppointmentData extends Model
     {
         return $this->hasMany(LaboratoryOrder::class, 'appointment_id', 'id');
     }
+    // public function anesthesiaOrder()
+    // {
+    //     return $this->hasMany(AnesthesiaOrder::class, 'appointment_id', 'id');
+    // }
 
     public function forReadingLabOrders()
     {
@@ -95,5 +99,9 @@ class AppointmentData extends Model
     public function socialHistory()
     {
         return $this->hasOne(SocialHistory::class, 'appointment_id', 'id');
+    }
+    public function operationProcedure()
+    {
+        return $this->hasMany(operationProcedure::class, 'appointment_id', 'id');
     }
 }

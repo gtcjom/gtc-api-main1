@@ -21,7 +21,8 @@ class OperatingRoomChart extends Model
 		'priority',
 		'room_number',
 		'appointment_id',
-		'room_id'
+		'room_id',
+        'doctor_id',
 	];
 
 	public function patient()

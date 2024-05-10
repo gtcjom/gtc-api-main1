@@ -1,60 +1,54 @@
 <?php
 
-namespace App\Http\Controllers\V2\Laboratory;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\LaboratoryTestResource;
-use App\Models\LaboratoryTest;
+use App\Http\Resources\AnesthesiaOrderResource;
+use App\Http\Resources\AnesthesiaTestResource;
+use App\Models\AnesthesiaTest;
 use Illuminate\Http\Request;
 
-class LaboratoryTestController extends Controller
+class AnesthesiaTestController extends Controller
 {
-
+    //
     public function index()
     {
         $type = request()->get('type');
-        return LaboratoryTestResource::collection(LaboratoryTest::query()
+        return AnesthesiaTestResource::collection(AnesthesiaTest::query()
             ->when($type, function ($query, $type) {
                 $query->where('type', $type);
             })->orderBy('name')->get());
     }
-
     public function store(Request $request)
     {
-        $test = new LaboratoryTest();
+        $test = new AnesthesiaTest();
         $test->name = $request->get('name');
         $test->description = $request->get('description');
-        $test->lab_rate = $request->get('lab_rate');
         $test->type = $request->get('type');
         $test->save();
 
-        return LaboratoryTestResource::make($test);
+        return AnesthesiaTestResource::make($test);
     }
-
     public function show($id)
     {
 
-        $test =  LaboratoryTest::query()->findOrFail($id);
-        return LaboratoryTestResource::make($test);
+        $test =  AnesthesiaTest::query()->findOrFail($id);
+        return AnesthesiaTestResource::make($test);
     }
-
     public function update(Request $request, $id)
     {
         //
-        $test =  LaboratoryTest::query()->findOrFail($id);
+        $test =  AnesthesiaTest::query()->findOrFail($id);
         $test->name = $request->get('name');
         $test->description = $request->get('description');
-        $test->lab_rate = $request->get('lab_rate');
         $test->type = $request->get('type');
         $test->save();
 
-        return LaboratoryTestResource::make($test);
+        return AnesthesiaTestResource::make($test);
     }
-
     public function destroy($id)
     {
         //
-        $test =  LaboratoryTest::query()->findOrFail($id);
+        $test =  AnesthesiaTest::query()->findOrFail($id);
         $test->delete();
         return response()->json(['message' => "Deleted successfully!"], 200);
     }

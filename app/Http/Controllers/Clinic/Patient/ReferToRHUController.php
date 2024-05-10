@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Clinic\Patient;
 use App\Events\AppointmentEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AppointmentDataResource;
+use App\Models\AnesthesiaOrder;
 use App\Models\AppointmentData;
 use App\Models\LaboratoryOrder;
 use App\Models\HealthUnit;
 use App\Models\ItemInventory;
 use App\Models\ItemUsage;
+use App\Models\OperationProcedure;
 use App\Models\Patient;
 use App\Models\PatientCase;
 use App\Models\User;
@@ -688,6 +690,29 @@ class ReferToRHUController extends Controller
         }
 
         return $location;
+    }
+    public function uploadOperatingProcedure(Request $request, int $id)
+    {
+        $user = request()->user();
+        // $anesthesiaOrder = OperationProcedure::query()->findOrFail($id);
+        $appointment = AppointmentData::query()->findOrFail($id);
+
+        $appointment->for_anesthesia = 0;
+        $appointment->status = 'for-operating-procedure';
+        // $appointment->referred_to = $request->get('doctor_id');
+        $appointment->operation_date = $request->get('operation_date');
+        $appointment->operation_time = $request->get('operation_time');
+        $appointment->procedure = $request->get('procedure');
+        $appointment->surgeon_assign = $request->get('surgeon_assign');
+        $appointment->anesthesiologist_assign = $request->get('anesthesiologist_assign');
+        $appointment->operation_status = $request->get('operation_status');
+        $appointment->processed_by = $user->id;
+        $appointment->save();
+
+
+        return response()->json([
+            'message' => 'Success'
+        ]);
     }
 
     public function uploadXray(Request $request, int $id)
@@ -1541,6 +1566,34 @@ class ReferToRHUController extends Controller
                 ->latest()
                 ->get();
         }
+        return response()->json([
+            'data' => AppointmentDataResource::collection($appointments->load([
+                'patient',
+                'bhs',
+                'rhu',
+                'tb_symptoms',
+                'vitals',
+                'socialHistory',
+                'environmentalHistory',
+            ])),
+            'count' => $appointments->count()
+        ]);
+    }
+
+    public function getPendingAnesthesia()
+    {
+        $user = request()->user();
+        $location = $this->getUserLocation();
+        if ($user->type == 'HIS-ANESTHESIA') {
+            $appointments = AppointmentData::query()
+                // ->whereIn('status', ['pending-for-anesthesia', 'pending-for-anesthesia-release'])
+                ->where('for_sph', 1)
+                ->where('for_anesthesia', 1)
+                ->with(['patient'])
+                // ->latest()
+                ->get();
+        }
+
         return response()->json([
             'data' => AppointmentDataResource::collection($appointments->load([
                 'patient',

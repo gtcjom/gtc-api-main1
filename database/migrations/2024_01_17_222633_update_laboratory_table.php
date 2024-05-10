@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('laboratory_tests', function (Blueprint $table) {
             $table->string('type')->nullable();
+
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('laboratory_tests', function (Blueprint $table) {
             $table->dropColumn('type');
+
             //
         });
     }

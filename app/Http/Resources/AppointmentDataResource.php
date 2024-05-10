@@ -105,6 +105,8 @@ class AppointmentDataResource extends JsonResource
             "diagnosis_code" => $this->diagnosis_code,
             "procedure_code" => $this->procedure_code,
             'item_used' => $this->item_used,
+
+            'for_anesthesia' => $this->for_anesthesia,
         ];
     }
 }
