@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('operation_procedures', function (Blueprint $table) {
             $table->id();
             // $table->unsignedBigInteger('patient_id');
-            $table->foreignId('patient_id');
+            $table->unsignedBigInteger('patient_id');
             $table->string('operation_number')->nullable();
             $table->date('operation_date')->nullable();
             $table->time('operation_time')->nullable();
             $table->string('procedure_test_type')->nullable();
             $table->string('procedure')->nullable();
-            $table->foreignId('doctor_id')->default(null)->nullable();
+            $table->unsignedBigInteger('doctor_id')->nullable();
             $table->string('operation_status')->nullable();
             $table->foreignId('health_unit_id')->default(null)->nullable();
             $table->foreignId('appointment_id')->default(null)->nullable();

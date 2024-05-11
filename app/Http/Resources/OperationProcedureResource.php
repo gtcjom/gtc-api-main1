@@ -16,12 +16,14 @@ class OperationProcedureResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'patient_id' => $this->patient_id,
             'operation_number' => $this->operation_number,
             'operation_date' => $this->operation_date,
+            'appointment_id' => $this->appointment_id,
+            'patient_id' => $this->patient_id,
+            'doctor_id' => $this->doctor_id,
+            'health_unit_id' => $this->health_unit_id,
             'operation_time' => $this->operation_time,
             'procedure' => $this->procedure,
-            'doctor_id' => $this->doctor_id,
             'operation_status' => $this->operation_status,
             'relationships' => [
                 'healthUnit' => HealthUnitResource::make($this->whenLoaded('healthUnit')),

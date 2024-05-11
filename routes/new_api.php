@@ -573,10 +573,12 @@ Route::middleware(['auth:api'])->prefix('v1')->group(function () {
 
         Route::prefix('operation-procedure')->group(function () {
             Route::get('/list', [OperationProcedureController::class, 'index']);
+            Route::get('/patient/{id}', [OperationProcedureController::class, 'patientOperation']);
             Route::get('/show/{operationResult}', [OperationProcedureController::class, 'show']);
             Route::post('/store', [OperationProcedureController::class, 'store']);
             Route::patch('/update/{id}', [OperationProcedureController::class, 'update']);
             Route::delete('/delete/{id}', [OperationProcedureController::class, 'destroy']);
+            Route::get('/updated-procedure/{id}', [OperationProcedureController::class, 'updateProcedureStatus']);
         });
     });
 

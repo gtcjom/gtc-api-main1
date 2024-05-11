@@ -7,6 +7,7 @@ use App\Http\Resources\OperationProcedureResource;
 use App\Models\AppointmentData;
 use App\Models\LaboratoryTest;
 use App\Models\OperationProcedure;
+use App\Services\InventoryService;
 use App\Services\OperationProcedureService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -54,9 +55,13 @@ class OperationProcedureController extends Controller
     {
         $user = request()->user();
         // $type = $user->type == 'HIS-ANESTHESIA'
-
+        $operation_status = request('status');
+        if ($operation_status !== 'RESU' && $operation_status !== 'DONE') {
+            // Default to 'Operating-Room' if status parameter is neither 'RESU' nor 'DONE'
+            $operation_status = 'Operating-Room';
+        }
         $pending_operation = OperationProcedure::query()
-            ->where('operation_status', request('status', 'operating_room'))
+            ->where('operation_status', $operation_status)
             ->where('health_unit_id', $user->health_unit_id)
             ->with(['patient', 'doctor', 'clinic', 'healthUnit'])
             ->latest()
@@ -69,7 +74,7 @@ class OperationProcedureController extends Controller
         $appointment = AppointmentData::query()->findOrFail($appointment_id);
 
         $procedureOrder = OperationProcedure::query()
-            ->where('operation_status', 'operating_room')
+            ->where('operation_status', 'Operating-Room')
             ->where('patient_id', $appointment->patient_id)
             ->get();
         if ($procedureOrder->count()) {
@@ -101,10 +106,10 @@ class OperationProcedureController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function store(Request $request, OperationProcedureService $operationProcedureService)
+    public function store(Request $request, InventoryService $inventoryService, OperationProcedureService $operationProcedureService)
     {
         return response()->json([
-            'data' => new OperationProcedureResource($operationProcedureService->store($request)),
+            'data' => new OperationProcedureResource($operationProcedureService->store($inventoryService, $request)),
             'message' => 'Operating Order successfully.'
         ], Response::HTTP_CREATED);
     }
@@ -178,6 +183,15 @@ class OperationProcedureController extends Controller
         );
     }
 
+    public function updateProcedureStatus($id)
+    {
+        $procedural = OperationProcedure::where('patient_id', $id)->latest()->first();
+
+        return response()->json([
+            'data' => new OperationProcedureResource($procedural),
+            'message' => 'Patient Latest Operation Procedure retrieved Successfully'
+        ], Response::HTTP_OK);
+    }
     /**
      * Remove the specified resource from storage.
      *
