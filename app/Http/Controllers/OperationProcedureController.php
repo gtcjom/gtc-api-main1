@@ -113,20 +113,6 @@ class OperationProcedureController extends Controller
             'message' => 'Operating Order successfully.'
         ], Response::HTTP_CREATED);
     }
-    // public function store()
-    // {
-    //     //
-    //     $procedural = new OperationProcedure();
-    //     $procedural->patient_id = request()->get('patient_id');
-    //     $procedural->operation_date = request()->get('operation_date');
-    //     $procedural->operation_time = request()->get('operation_time');
-    //     $procedural->procedure = request()->get('procedure');
-    //     $procedural->doctor_id = request()->get('doctor_id');
-    //     $procedural->operation_status = request()->get('operation_status');
-    //     $procedural->save();
-    //     return OperationProcedureResource::make($procedural);
-    // }
-
 
     /**
      * Display the specified resource.
@@ -174,6 +160,7 @@ class OperationProcedureController extends Controller
      */
     public function update(Request $request, OperationProcedureService $operationProcedureService, int $id)
     {
+      
         return response()->json(
             [
                 'data' => new OperationProcedureResource($operationProcedureService->update($request, $id)),
@@ -192,6 +179,7 @@ class OperationProcedureController extends Controller
             'message' => 'Patient Latest Operation Procedure retrieved Successfully'
         ], Response::HTTP_OK);
     }
+    // public updateOperationStatus
     /**
      * Remove the specified resource from storage.
      *

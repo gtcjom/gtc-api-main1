@@ -44,12 +44,12 @@ class OperationProcedureService
             'appointment_id' => ['nullable'],
         ]);
         $user = $request->user();
-        $operation_status = 'Operating-Room'; // Default value
-        if ($request->has('RESU')) {
-            $operation_status = 'RESU';
-        } elseif ($request->has('DONE')) {
-            $operation_status = 'DONE';
-        }
+        // $operation_status = 'Operating-Room'; // Default value
+        // if ($request->has('RESU')) {
+        //     $operation_status = 'RESU';
+        // } elseif ($request->has('DONE')) {
+        //     $operation_status = 'DONE';
+        // }
         $operationProcedure = OperationProcedure::create(array_merge([
             'operation_number' => 'ORP-' . substr(strtoupper(bin2hex(random_bytes(6))), 0, -1),
             'operation_date' => $request->operation_date,
@@ -59,8 +59,7 @@ class OperationProcedureService
             'procedure' => $request->procedure,
             'doctor_id' => $user->doctor_id,
             'health_unit_id' => $user->health_unit_id,
-
-            'operation_status' => $operation_status
+            'operation_status' => $request->operation_status
 
         ]));
 
@@ -71,8 +70,7 @@ class OperationProcedureService
     public function update(Request $request, int $id): Model|OperationProcedure|Collection|Builder|array|null
     {
         $data = $request->validate([
-            'operation_date' => ['required', 'date'],
-            'procedure' => ['required', 'string'],
+            'operation_status' => ['required', 'string'],
         ]);
 
         $operationProcedure = OperationProcedure::findOrFail($id);
