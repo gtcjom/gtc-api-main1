@@ -14,6 +14,7 @@ class OperationProcedure extends Model
         'operation_date',
         'operation_time',
         'procedure',
+        'operation_notes',
         'doctor_id',
         'operation_status',
         'health_unit_id',

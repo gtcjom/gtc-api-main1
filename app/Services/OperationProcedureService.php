@@ -40,6 +40,8 @@ class OperationProcedureService
             'operation_date' => ['required', 'date'],
             'operation_time' => ['required', 'date_format:H:i'],
             'procedure' => ['required', 'string'],
+            'operation_notes' => ['nullable', 'string'],
+            'operation_status' => ['required', 'string'],
             'doctor_id' => ['nullable'],
             'appointment_id' => ['nullable'],
         ]);
@@ -57,6 +59,7 @@ class OperationProcedureService
             'appointment_id' => $request->appointment_id,
             'operation_time' => $request->operation_time,
             'procedure' => $request->procedure,
+            'operation_notes' => $request->operation_notes,
             'doctor_id' => $user->doctor_id,
             'health_unit_id' => $user->health_unit_id,
             'operation_status' => $request->operation_status
@@ -71,10 +74,13 @@ class OperationProcedureService
     {
         $data = $request->validate([
             'operation_status' => ['required', 'string'],
+            'operation_notes' => ['required', 'string'],
         ]);
 
         $operationProcedure = OperationProcedure::findOrFail($id);
         $operationProcedure->update($data);
+        // $operationProcedure->operation_status = $data['operation_status'];
+        // $operationProcedure->save();
         $operationProcedure->load(['patient', 'doctor', 'clinic']);
 
         return $operationProcedure;

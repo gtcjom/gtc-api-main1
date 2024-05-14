@@ -160,7 +160,7 @@ class OperationProcedureController extends Controller
      */
     public function update(Request $request, OperationProcedureService $operationProcedureService, int $id)
     {
-      
+
         return response()->json(
             [
                 'data' => new OperationProcedureResource($operationProcedureService->update($request, $id)),
@@ -173,6 +173,12 @@ class OperationProcedureController extends Controller
     public function updateProcedureStatus($id)
     {
         $procedural = OperationProcedure::where('patient_id', $id)->latest()->first();
+        //ayaw lang ing ania sir kay dili ni safe what if naa siya duha ka procedures dili mao nga procedure ang ma update
+        if (!$procedural) {
+            return response()->json([
+                'message' => 'No operation procedure found for the patient.'
+            ], Response::HTTP_NOT_FOUND);
+        }
 
         return response()->json([
             'data' => new OperationProcedureResource($procedural),
