@@ -11,7 +11,8 @@ class InventoryPharmacy extends Model
     protected $fillable = [
         'pharmacy_date',
         'pharmacy_supplies',
-        'pharmacy_quantity',
+        'pharmacy_stocks',
+        'pharmacy_price',
         'pharmacy_status',
     ];
 }

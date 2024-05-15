@@ -73,7 +73,9 @@ use App\Http\Controllers\Clinic\Patient\LaboratoryItemUsageController;
 use App\Http\Controllers\Clinic\Patient\ReferToRHUController;
 use App\Http\Controllers\HealthUnitPersonnelController;
 use App\Http\Controllers\InventoryCsrController;
+use App\Http\Controllers\InventoryCSROrderController;
 use App\Http\Controllers\InventoryPharmacyController;
+use App\Http\Controllers\InventoryPharmacyOrderController;
 use App\Http\Controllers\InventoryStocksController;
 use App\Http\Controllers\OperatingRoomController;
 use App\Http\Controllers\OperationProcedureController;
@@ -566,7 +568,7 @@ Route::middleware(['auth:api'])->prefix('v1')->group(function () {
             Route::patch('/update/{imaging}', [ImagingController::class, 'update']);
         });
     });
-
+    Route::get('/csr-supplies', [InventoryCsrController::class, 'getCsrSupplies']);
     Route::prefix('anesthesia')->group(function () {
         Route::get('/get-anesthesia-queue', [OperationProcedureController::class, 'getProcedureQueue']);
         Route::get('/upload-or-result/{id}', [OperationProcedureController::class, 'getProcedureQueue']);
@@ -580,7 +582,18 @@ Route::middleware(['auth:api'])->prefix('v1')->group(function () {
             Route::delete('/delete/{id}', [OperationProcedureController::class, 'destroy']);
             Route::get('/updated-procedure/{id}', [OperationProcedureController::class, 'updateProcedureStatus']);
         });
+        Route::prefix('csr-pharmacy')->group(function () {
+            Route::get('/list', [InventoryCSROrderController::class, 'index']);
+            Route::post('/store', [InventoryCSROrderController::class, 'store']);
+            Route::get('/show/{id}', [InventoryCSROrderController::class, 'show']);
+        });
+        Route::prefix('pharmacy-csr')->group(function () {
+            Route::get('/list', [InventoryPharmacyOrderController::class, 'index']);
+            Route::post('/store', [InventoryPharmacyOrderController::class, 'store']);
+            Route::get('/show/{id}', [InventoryPharmacyOrderController::class, 'show']);
+        });
     });
+
 
     Route::prefix('cis/dashboard')->group(function () {
         Route::get('/population', [CISDashboardController::class, 'population']);

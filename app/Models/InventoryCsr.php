@@ -11,7 +11,12 @@ class InventoryCsr extends Model
     protected $fillable = [
         'csr_date',
         'csr_supplies',
-        'csr_quantity',
+        'csr_stocks',
+        'csr_price',
         'csr_status',
     ];
+    // public function inventoryCSR()
+    // {
+    //     return $this->hasOne(InventoryCsr::class, 'inventory_csr_id');
+    // }
 }

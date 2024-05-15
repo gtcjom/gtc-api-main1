@@ -172,7 +172,7 @@ class OperationProcedureController extends Controller
 
     public function updateProcedureStatus($id)
     {
-        $procedural = OperationProcedure::where('patient_id', $id)->latest()->first();
+        $procedural = OperationProcedure::where('id', $id)->latest()->first();
         //ayaw lang ing ania sir kay dili ni safe what if naa siya duha ka procedures dili mao nga procedure ang ma update
         if (!$procedural) {
             return response()->json([

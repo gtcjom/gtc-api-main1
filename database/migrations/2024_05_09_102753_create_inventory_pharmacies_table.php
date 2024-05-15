@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->date('pharmacy_date')->nullable();
             $table->string('pharmacy_supplies')->nullable();
-            $table->string('pharmacy_quantity')->nullable();
+            $table->string('pharmacy_stocks')->nullable();
+            $table->string('pharmacy_price')->nullable();
             $table->string('pharmacy_status')->nullable();
             $table->timestamps();
         });

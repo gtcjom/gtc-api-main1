@@ -18,7 +18,8 @@ class InventoryCsrResource extends JsonResource
             'id' => $this->id,
             'csr_date' => $this->csr_date,
             'csr_supplies' => $this->csr_supplies,
-            'csr_quantity' => $this->csr_quantity,
+            'csr_stocks' => $this->csr_stocks,
+            'csr_price' => $this->csr_price,
             'csr_status' => $this->csr_status,
         ];
     }

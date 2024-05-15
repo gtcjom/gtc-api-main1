@@ -18,7 +18,8 @@ class InventoryPharmacyResource extends JsonResource
             'id' => $this->id,
             'pharmacy_date' => $this->pharmacy_date,
             'pharmacy_supplies' => $this->pharmacy_supplies,
-            'pharmacy_quantity' => $this->pharmacy_quantity,
+            'pharmacy_stocks' => $this->pharmacy_stocks,
+            'pharmacy_price' => $this->pharmacy_price,
             'pharmacy_status' => $this->pharmacy_status,
         ];
     }

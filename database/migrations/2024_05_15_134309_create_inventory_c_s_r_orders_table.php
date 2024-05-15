@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('inventory_csrs', function (Blueprint $table) {
+        Schema::create('inventory_c_s_r_orders', function (Blueprint $table) {
             $table->id();
-            $table->date('csr_date')->nullable();
-            $table->string('csr_supplies')->nullable();
-            $table->string('csr_stocks')->nullable();
-            $table->string('csr_price')->nullable();
-            $table->string('csr_status')->nullable();
+            $table->unsignedBigInteger('patient_id');
+            // $table->unsignedBigInteger('inventory_csr_id');
+            $table->unsignedBigInteger('doctor_id')->nullable();
+            $table->date('date')->nullable();
+            $table->string('supplies')->nullable();
+            $table->string('quantity')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inventory_csrs');
+        Schema::dropIfExists('inventory_c_s_r_orders');
     }
 };

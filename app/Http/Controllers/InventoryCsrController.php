@@ -53,13 +53,21 @@ class InventoryCsrController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function getCsrSupplies()
+    {
+        $supplies = InventoryCsr::all();
+        return InventoryCsrResource::collection($supplies);
+    }
+
     public function store()
     {
         //
         $stocks = new InventoryCsr();
         $stocks->csr_date = request()->get('csr_date');
         $stocks->csr_supplies = request()->get('csr_supplies');
-        $stocks->csr_quantity = request()->get('csr_quantity');
+        $stocks->csr_stocks = request()->get('csr_stocks');
+        $stocks->csr_price = request()->get('csr_price');
         $stocks->csr_status = request()->get('csr_status');
         $stocks->save();
         return InventoryCsrResource::make($stocks);

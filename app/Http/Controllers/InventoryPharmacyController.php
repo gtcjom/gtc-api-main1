@@ -58,7 +58,8 @@ class InventoryPharmacyController extends Controller
         $stocks = new InventoryPharmacy();
         $stocks->pharmacy_date = request()->get('pharmacy_date');
         $stocks->pharmacy_supplies = request()->get('pharmacy_supplies');
-        $stocks->pharmacy_quantity = request()->get('pharmacy_quantity');
+        $stocks->pharmacy_stocks = request()->get('pharmacy_stocks');
+        $stocks->pharmacy_price = request()->get('pharmacy_price');
         $stocks->pharmacy_status = request()->get('pharmacy_status');
         $stocks->save();
         return InventoryPharmacyResource::make($stocks);
