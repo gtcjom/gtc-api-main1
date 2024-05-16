@@ -24,9 +24,24 @@ class InventoryCSROrderController extends Controller
         return InventoryCSROrderResource::collection($inventoryCsrOrderService->list($request));
     }
 
-    public function patientCsrOrder($id)
+
+    public function getPatientCsrOrders($id, InventoryCsrOrderService $inventoryCsrOrderService)
     {
+        // Fetch patient CSR orders using the service
+        $patientCsrOrders = $inventoryCsrOrderService->getPatientCsrOrders($id);
+
+        // Return the orders in a JSON response
+        return response()->json([
+            'data' => InventoryCSROrderResource::collection($patientCsrOrders),
+            'message' => 'Patient CSR Orders retrieved successfully.'
+        ], Response::HTTP_OK);
     }
+
+
+    // public function patientCsrOrder($id)
+    // {
+    //     return InventoryCSROrder::where('patient_id', $id)->get();
+    // }
     /**
      * Show the form for creating a new resource.
      *

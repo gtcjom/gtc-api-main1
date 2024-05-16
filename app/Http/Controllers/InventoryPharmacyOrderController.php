@@ -25,6 +25,17 @@ class InventoryPharmacyOrderController extends Controller
         return InventoryPharmacyResource::collection($inventorypharmacyOrderService->list($request));
     }
 
+    public function getPatientPharmacyOrders($id, InventoryPharmacyOrderService $inventoryPharmacyOrderService)
+    {
+        // Fetch patient CSR orders using the service
+        $patientPharmacyOrders = $inventoryPharmacyOrderService->getPatientPharmacyOrders($id);
+
+        // Return the orders in a JSON response
+        return response()->json([
+            'data' => InventoryPharmacyOrderResource::collection($patientPharmacyOrders),
+            'message' => 'Patient Pharmacy Orders retrieved successfully.'
+        ], Response::HTTP_OK);
+    }
     /**
      * Show the form for creating a new resource.
      *

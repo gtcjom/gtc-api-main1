@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\InventoryPharmacyOrderResource;
 use App\Http\Resources\InventoryPharmacyResource;
 use App\Models\InventoryPharmacy;
+use App\Services\InventoryPharmacyOrderService;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -35,6 +37,17 @@ class InventoryPharmacyController extends Controller
             ->paginate(request('paginate', 12));
         return InventoryPharmacyResource::collection($stocks);
     }
+    // public function getPatientPharmacyOrders($id, InventoryPharmacyOrderService $inventoryPharmacyOrderService)
+    // {
+    //     // Fetch patient Pharmacy orders using the service
+    //     $patientPharmacyOrders = $inventoryPharmacyOrderService->getPatientPharmacyOrders($id);
+
+    //     // Return the orders in a JSON response
+    //     return response()->json([
+    //         'data' => InventoryPharmacyOrderResource::collection($patientPharmacyOrders),
+    //         'message' => 'Patient Pharmacy Orders retrieved successfully.'
+    //     ], Response::HTTP_OK);
+    // }
 
     /**
      * Show the form for creating a new resource.

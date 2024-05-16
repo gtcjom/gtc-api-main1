@@ -582,16 +582,30 @@ Route::middleware(['auth:api'])->prefix('v1')->group(function () {
             Route::delete('/delete/{id}', [OperationProcedureController::class, 'destroy']);
             Route::get('/updated-procedure/{id}', [OperationProcedureController::class, 'updateProcedureStatus']);
         });
-        Route::prefix('csr-pharmacy')->group(function () {
+        Route::prefix('patient-csr')->group(function () {
             Route::get('/list', [InventoryCSROrderController::class, 'index']);
             Route::post('/store', [InventoryCSROrderController::class, 'store']);
             Route::get('/show/{id}', [InventoryCSROrderController::class, 'show']);
+            Route::get('/patient/{id}', [InventoryCSROrderController::class, 'getPatientCsrOrders']);
         });
-        Route::prefix('pharmacy-csr')->group(function () {
+        Route::prefix('patient-pharmacy')->group(function () {
             Route::get('/list', [InventoryPharmacyOrderController::class, 'index']);
             Route::post('/store', [InventoryPharmacyOrderController::class, 'store']);
             Route::get('/show/{id}', [InventoryPharmacyOrderController::class, 'show']);
+            Route::get('/patient/{id}', [InventoryPharmacyOrderController::class, 'getPatientPharmacyOrders']);
         });
+    });
+
+    Route::get('/inventory-csr-supplies', [InventoryCsrController::class, 'getCsrSupplies']);
+    Route::prefix('inventory-csr')->group(function () {
+        Route::post('store', [InventoryCsrController::class, 'store']);
+        Route::get('show/{id}', [InventoryCsrController::class, 'show']);
+        Route::get('list', [InventoryCsrController::class, 'index']);
+    });
+    Route::prefix('inventory-pharmacy')->group(function () {
+        Route::post('store', [InventoryPharmacyController::class, 'store']);
+        Route::get('show/{id}', [InventoryPharmacyController::class, 'show']);
+        Route::get('list', [InventoryPharmacyController::class, 'index']);
     });
 
 
@@ -635,16 +649,7 @@ Route::middleware(['auth:api'])->prefix('v1')->group(function () {
         Route::delete('/delete/{barangay}', [BarangayController::class, 'destroy']);
     });
 
-    Route::prefix('inventory-csr')->group(function () {
-        Route::post('store', [InventoryCsrController::class, 'store']);
-        Route::get('show/{id}', [InventoryCsrController::class, 'show']);
-        Route::get('list', [InventoryCsrController::class, 'index']);
-    });
-    Route::prefix('inventory-pharmacy')->group(function () {
-        Route::post('store', [InventoryPharmacyController::class, 'store']);
-        Route::get('show/{id}', [InventoryPharmacyController::class, 'show']);
-        Route::get('list', [InventoryPharmacyController::class, 'index']);
-    });
+
     // Route::prefix('operation-procedure')->group(function () {
     //     Route::post('store', [OperationProcedureController::class, 'store']);
     //     Route::get('show/{id}', [OperationProcedureController::class, 'show']);

@@ -14,7 +14,7 @@ class InventoryPharmacyOrder extends Model
         'doctor_id',
         'date',
         'supplies',
-        'quality',
+        'quantity',
     ];
     public function patient()
     {

@@ -37,6 +37,11 @@ class InventoryCsrController extends Controller
         return InventoryCsrResource::collection($stocks);
     }
 
+    // public function getCsrSupplies()
+    // {
+    //     $supplies = InventoryCsr::pluck('csr_supplies');
+    //     return response()->json($supplies);
+    // }
     /**
      * Show the form for creating a new resource.
      *

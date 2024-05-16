@@ -19,6 +19,10 @@ class InventoryCsrOrderService
 
         return $inventoryCsrOrder;
     }
+    public function getPatientCsrOrders($patientId)
+    {
+        return InventoryCSROrder::where('patient_id', $patientId)->get();
+    }
 
     public function list(Request $request)
     {
@@ -70,5 +74,10 @@ class InventoryCsrOrderService
     //     $operationProcedure->load(['patient', 'doctor', 'clinic']);
 
     //     return $operationProcedure;
+    // }
+
+    // public function getInventoryCSRInstance()
+    // {
+
     // }
 }

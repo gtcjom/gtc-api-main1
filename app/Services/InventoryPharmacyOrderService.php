@@ -19,6 +19,10 @@ class InventoryPharmacyOrderService
 
         return $inventoryPharmacyOrder;
     }
+    public function getPatientPharmacyOrders($patientId)
+    {
+        return InventoryPharmacyOrder::where('patient_id', $patientId)->get();
+    }
 
     public function list(Request $request)
     {
