@@ -595,8 +595,8 @@ Route::middleware(['auth:api'])->prefix('v1')->group(function () {
             Route::get('/patient/{id}', [InventoryPharmacyOrderController::class, 'getPatientPharmacyOrders']);
         });
     });
-
-    Route::get('/inventory-csr-supplies', [InventoryCsrController::class, 'getCsrSupplies']);
+    Route::get('inventory-csr/supplies', [InventoryCsrController::class, 'getSupplies']);
+    Route::get('inventory-pharmacy/supplies', [InventoryPharmacyController::class, 'getSupplies']);
     Route::prefix('inventory-csr')->group(function () {
         Route::post('store', [InventoryCsrController::class, 'store']);
         Route::get('show/{id}', [InventoryCsrController::class, 'show']);

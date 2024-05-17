@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\InventoryPharmacy;
 use App\Models\InventoryPharmacyOrder;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,49 +20,63 @@ class InventoryPharmacyOrderService
 
         return $inventoryPharmacyOrder;
     }
-    public function getPatientPharmacyOrders($patientId)
+    // public function getPatientPharmacyOrders($id)
+    // {
+    //     return InventoryPharmacyOrder::where('id', $id)->get();
+    // }
+    public function getPatientPharmacyOrder($id)
     {
-        return InventoryPharmacyOrder::where('patient_id', $patientId)->get();
+        return InventoryPharmacyOrder::with(['patient', 'doctor', 'inventoryPharmacy'])
+            ->where('patient_id', $id)
+            ->get();
     }
+
 
     public function list(Request $request)
     {
-        $inventoryPharmacyOrder = $request->get('supplies') ? $request->get('supplies') : null;
+        $inventoryPharmacyOrder = $request->get('inventory_pharmacies_id') ? $request->get('supplies') : null;
 
         return InventoryPharmacyOrder::query()
-            ->with(['patient', 'doctor'])
+            ->with(['patient', 'doctor', 'inventory_pharmacies'])
             ->when($inventoryPharmacyOrder, function ($query, $inventoryPharmacyOrder) {
-                $query->where('supplies', $inventoryPharmacyOrder);
+                $query->where('inventory_pharmacies_id', $inventoryPharmacyOrder);
             })
             ->paginate(request('paginate', 12));
     }
 
     public function store(InventoryService $inventoryService, Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'patient_id' => ['required', 'string', Rule::exists('patients', 'id')],
+            'inventory_pharmacies_id' => ['required', 'string', Rule::exists('inventory_pharmacies', 'id')],
             'doctor_id' => ['nullable'],
-            // 'inventory_csr_id' => ['nullable'],
-            'date' => ['nullable', 'string'],
-            'supplies' => ['nullable', 'string'],
-            'quantity' => ['nullable', 'string'],
+            'date' => ['nullable', 'date'],
+            'quantity' => ['nullable', 'integer'],
         ]);
+
         $user = $request->user();
 
-        $inventoryService = InventoryPharmacyOrder::create(array_merge([
-            'patient_id' => $request->patient_id,
+        $inventoryPharmacyOrder = InventoryPharmacyOrder::create(array_merge([
+            'patient_id' => $validatedData['patient_id'],
+            'inventory_pharmacies_id' => $validatedData['inventory_pharmacies_id'] ?? null,
             'doctor_id' => $user->doctor_id,
-            // 'inventory_csr_id' => $request->inventory_csr_id,
-            'date' => $request->date,
-            'supplies' => $request->supplies,
-            'quantity' => $request->quantity,
+            'date' => $validatedData['date'],
+            'quantity' => $validatedData['quantity'],
         ]));
 
-        $inventoryService->load(['patient', 'doctor']);
-        $inventoryService->save();
-        return $inventoryService;
+        if (isset($validatedData['inventory_pharmacies_id']) && isset($validatedData['quantity'])) {
+            $inventoryPharmacy = InventoryPharmacy::find($validatedData['inventory_pharmacies_id']);
+            if ($inventoryPharmacy) {
+                $inventoryPharmacy->pharmacy_stocks -= $validatedData['quantity'];
+                $inventoryPharmacy->save();
+            }
+        }
+
+        $inventoryPharmacyOrder->load(['patient', 'doctor', 'inventoryPharmacy']);
+
+        return $inventoryPharmacyOrder;
     }
-    // public function update(Request $request, int $id): Model|InventoryCSROrder|Collection|Builder|array|null
+    // public function update(Request $request, int $id): Model|InventoryPharmaciesOrder|Collection|Builder|array|null
     // {
     //     $data = $request->validate([
     //         'operation_status' => ['required', 'string'],

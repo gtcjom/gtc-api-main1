@@ -15,8 +15,22 @@ class InventoryCsr extends Model
         'csr_price',
         'csr_status',
     ];
-    // public function inventoryCSR()
-    // {
-    //     return $this->hasOne(InventoryCsr::class, 'inventory_csr_id');
-    // }
+    public static function getSupplies()
+    {
+        return self::all();
+        // return self::all()->pluck('csr_supplies');
+    }
+    public function inventoryCsrOrders()
+    {
+        return $this->hasMany(InventoryCSROrder::class, 'inventory_csrs_id');
+    }
+
+    public function doctor()
+    {
+        return $this->belongsTo(User::class, 'doctor_id');
+    }
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id');
+    }
 }

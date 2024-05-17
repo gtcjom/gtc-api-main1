@@ -14,38 +14,38 @@ return new class extends Migration
     public function up()
     {
         Schema::table('appointment_data', function (Blueprint $table) {
-            //
-            // $table->string('imaging_image', 10)->default(null)->nullable();
-            // $table->string('breast_single', 10)->default(null)->nullable();
-            // $table->string('chest_thorax', 10)->default(null)->nullable();
-            // $table->string('inguinal', 10)->default(null)->nullable();
-            // $table->string('neck_usd', 10)->default(null)->nullable();
-            // $table->string('scrotum_testes', 10)->default(null)->nullable();
-            // $table->string('superficial_soft_tissue', 10)->default(null)->nullable();
-            // $table->string('thyroid_usd', 10)->default(null)->nullable();
-            // $table->string('whole_abdomen', 10)->default(null)->nullable();
-            // $table->string('wab_appendix', 10)->default(null)->nullable();
-            // $table->string('breast_elasto', 10)->default(null)->nullable();
-            // $table->string('breast_both', 10)->default(null)->nullable();
-            // $table->string('lower_abdomen', 10)->default(null)->nullable();
-            // $table->string('upper_abdomen', 10)->default(null)->nullable();
-            // $table->string('kub_pelvis', 10)->default(null)->nullable();
-            // $table->string('kub_prostate', 10)->default(null)->nullable();
-            // $table->string('guided_aspiration', 10)->default(null)->nullable();
-            // $table->string('guided_biopsy', 10)->default(null)->nullable();
-            // $table->string('tvs', 10)->default(null)->nullable();
-            // $table->string('inguinoscrotal', 10)->default(null)->nullable();
-            // $table->string('bps', 10)->default(null)->nullable();
-            // $table->string('hbt', 10)->default(null)->nullable();
-            // $table->string('kub_only', 10)->default(null)->nullable();
-            // $table->string('pregnant_ultrasound', 10)->default(null)->nullable();
-            // $table->string('pelvis_ultrasound', 10)->default(null)->nullable();
-            // $table->string('neck_ultrasound', 10)->default(null)->nullable();
-            // $table->string('appendix_ultrasound', 10)->default(null)->nullable();
-            // $table->string('avdleb_ultrasound', 10)->default(null)->nullable();
-            // $table->string('avdles_ultrasound', 10)->default(null)->nullable();
-            // $table->string('vdles_ultrasound', 10)->default(null)->nullable();
-            // $table->string('adles_ultrasound', 10)->default(null)->nullable();
+
+            $table->string('imaging_image', 10)->default(null)->nullable();
+            $table->string('breast_single', 10)->default(null)->nullable();
+            $table->string('chest_thorax', 10)->default(null)->nullable();
+            $table->string('inguinal', 10)->default(null)->nullable();
+            $table->string('neck_usd', 10)->default(null)->nullable();
+            $table->string('scrotum_testes', 10)->default(null)->nullable();
+            $table->string('superficial_soft_tissue', 10)->default(null)->nullable();
+            $table->string('thyroid_usd', 10)->default(null)->nullable();
+            $table->string('whole_abdomen', 10)->default(null)->nullable();
+            $table->string('wab_appendix', 10)->default(null)->nullable();
+            $table->string('breast_elasto', 10)->default(null)->nullable();
+            $table->string('breast_both', 10)->default(null)->nullable();
+            $table->string('lower_abdomen', 10)->default(null)->nullable();
+            $table->string('upper_abdomen', 10)->default(null)->nullable();
+            $table->string('kub_pelvis', 10)->default(null)->nullable();
+            $table->string('kub_prostate', 10)->default(null)->nullable();
+            $table->string('guided_aspiration', 10)->default(null)->nullable();
+            $table->string('guided_biopsy', 10)->default(null)->nullable();
+            $table->string('tvs', 10)->default(null)->nullable();
+            $table->string('inguinoscrotal', 10)->default(null)->nullable();
+            $table->string('bps', 10)->default(null)->nullable();
+            $table->string('hbt', 10)->default(null)->nullable();
+            $table->string('kub_only', 10)->default(null)->nullable();
+            $table->string('pregnant_ultrasound', 10)->default(null)->nullable();
+            $table->string('pelvis_ultrasound', 10)->default(null)->nullable();
+            $table->string('neck_ultrasound', 10)->default(null)->nullable();
+            $table->string('appendix_ultrasound', 10)->default(null)->nullable();
+            $table->string('avdleb_ultrasound', 10)->default(null)->nullable();
+            $table->string('avdles_ultrasound', 10)->default(null)->nullable();
+            $table->string('vdles_ultrasound', 10)->default(null)->nullable();
+            $table->string('adles_ultrasound', 10)->default(null)->nullable();
         });
     }
 

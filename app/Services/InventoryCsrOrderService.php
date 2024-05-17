@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\InventoryCsr;
 use App\Models\InventoryCSROrder;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -13,71 +14,71 @@ class InventoryCsrOrderService
 {
     public function show(int $id)
     {
-        $inventoryCsrOrder = InventoryCSROrder::query()
-            ->with(['patient', 'doctor'])
+        return InventoryCSROrder::query()
+            ->with(['patient', 'doctor', 'inventoryCsr'])
             ->findOrFail($id);
+        // $inventoryCsrOrder = InventoryCSROrder::query()
+        //     ->with(['patient', 'doctor', 'inventoryCsr'])
+        //     ->findOrFail($id);
 
-        return $inventoryCsrOrder;
+        // return $inventoryCsrOrder;
     }
-    public function getPatientCsrOrders($patientId)
+
+    // public function getPatientCsrOrder($id)
+    // {
+    //     return InventoryCSROrder::where('id', $id)->get();
+    // }
+
+    public function getPatientCsrOrder($id)
     {
-        return InventoryCSROrder::where('patient_id', $patientId)->get();
+        return InventoryCSROrder::with(['patient', 'doctor', 'inventoryCsr'])
+            ->where('patient_id', $id)
+            ->get();
     }
 
     public function list(Request $request)
     {
-        $inventoryCsrOrder = $request->get('supplies') ? $request->get('supplies') : null;
+        $inventoryCsrOrder = $request->get('inventory_csrs_id');
 
-        return InventoryCSROrder::query()
-            ->with(['patient', 'doctor'])
+        return InventoryCSROrder::with(['patient', 'doctor', 'inventory_csrs'])
             ->when($inventoryCsrOrder, function ($query, $inventoryCsrOrder) {
-                $query->where('supplies', $inventoryCsrOrder);
+                $query->where('inventory_csrs_id', $inventoryCsrOrder);
             })
-            ->paginate(request('paginate', 12));
+            ->paginate($request->get('paginate', 12));
     }
 
     public function store(InventoryService $inventoryService, Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'patient_id' => ['required', 'string', Rule::exists('patients', 'id')],
+            'inventory_csrs_id' => ['required', 'string', Rule::exists('inventory_csrs', 'id')],
             'doctor_id' => ['nullable'],
-            // 'inventory_csr_id' => ['nullable'],
-            'date' => ['nullable', 'string'],
-            'supplies' => ['nullable', 'string'],
-            'quantity' => ['nullable', 'string'],
+            'date' => ['nullable', 'date'],
+            'quantity' => ['nullable', 'integer'],
         ]);
+
         $user = $request->user();
 
-        $inventoryService = InventoryCSROrder::create(array_merge([
-            'patient_id' => $request->patient_id,
+        $inventoryCsrOrder = InventoryCSROrder::create(array_merge([
+            'patient_id' => $validatedData['patient_id'],
+            'inventory_csrs_id' => $validatedData['inventory_csrs_id'] ?? null,
             'doctor_id' => $user->doctor_id,
-            // 'inventory_csr_id' => $request->inventory_csr_id,
-            'date' => $request->date,
-            'supplies' => $request->supplies,
-            'quantity' => $request->quantity,
+            'date' => $validatedData['date'],
+            'quantity' => $validatedData['quantity'],
         ]));
 
-        $inventoryService->load(['patient', 'doctor']);
-        $inventoryService->save();
-        return $inventoryService;
+        // Update CSR supplies stock
+        if (isset($validatedData['inventory_csrs_id']) && isset($validatedData['quantity'])) {
+            $inventoryCsr = InventoryCsr::find($validatedData['inventory_csrs_id']);
+            if ($inventoryCsr) {
+                $inventoryCsr->csr_stocks -= $validatedData['quantity'];
+                $inventoryCsr->save();
+            }
+        }
+
+        $inventoryCsrOrder->load(['patient', 'doctor', 'inventoryCsr']);
+
+        return $inventoryCsrOrder;
     }
-    // public function update(Request $request, int $id): Model|InventoryCSROrder|Collection|Builder|array|null
-    // {
-    //     $data = $request->validate([
-    //         'operation_status' => ['required', 'string'],
-    //     ]);
-
-    //     $operationProcedure = OperationProcedure::findOrFail($id);
-    //     $operationProcedure->update($data);
-    //     // $operationProcedure->operation_status = $data['operation_status'];
-    //     // $operationProcedure->save();
-    //     $operationProcedure->load(['patient', 'doctor', 'clinic']);
-
-    //     return $operationProcedure;
-    // }
-
-    // public function getInventoryCSRInstance()
-    // {
-
-    // }
+    // Additional methods such as update and csrStocksIn can be implemented here.
 }

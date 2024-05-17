@@ -18,13 +18,13 @@ class InventoryCSROrderResource extends JsonResource
             'id' => $this->id,
             'patient_id' => $this->patient_id,
             'doctor_id' => $this->doctor_id,
-            // 'inventory_csr_id' => $this->inventory_csr_id,
+            'inventory_csrs_id' => $this->inventory_csrs_id,
             'date' => $this->date,
-            'supplies' => $this->supplies,
+            // 'supplies' => $this->supplies,
             'quantity' => $this->quantity,
             'relationships' => [
                 'patient' => PatientResource::make($this->whenLoaded('patient')),
-                // 'inventory_csr_id' => InventoryCsrResource::make($this->whenLoaded('inventory_csr')),
+                'inventory_csrs_id' => InventoryCsrResource::make($this->whenLoaded('inventoryCsr')),
                 'doctor' => UserResource::make($this->whenLoaded('doctor')),
             ]
         ];

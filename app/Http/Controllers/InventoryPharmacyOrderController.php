@@ -28,7 +28,7 @@ class InventoryPharmacyOrderController extends Controller
     public function getPatientPharmacyOrders($id, InventoryPharmacyOrderService $inventoryPharmacyOrderService)
     {
         // Fetch patient CSR orders using the service
-        $patientPharmacyOrders = $inventoryPharmacyOrderService->getPatientPharmacyOrders($id);
+        $patientPharmacyOrders = $inventoryPharmacyOrderService->getPatientPharmacyOrder($id);
 
         // Return the orders in a JSON response
         return response()->json([

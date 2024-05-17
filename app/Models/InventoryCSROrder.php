@@ -10,10 +10,10 @@ class InventoryCSROrder extends Model
     use HasFactory;
     protected $fillable = [
         'patient_id',
-        // 'inventory_csr_id',
+        'inventory_csrs_id',
         'doctor_id',
         'date',
-        'supplies',
+        // 'supplies',
         'quantity',
     ];
     public function patient()
@@ -24,8 +24,8 @@ class InventoryCSROrder extends Model
     {
         return $this->belongsTo(User::class, 'doctor_id');
     }
-    // public function inventoryCSR()
-    // {
-    //     return $this->belongsTo(InventoryCsr::class, 'inventory_csr_id');
-    // }
+    public function inventoryCsr()
+    {
+        return $this->belongsTo(InventoryCsr::class, 'inventory_csrs_id');
+    }
 }

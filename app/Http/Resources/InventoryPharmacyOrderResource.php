@@ -18,13 +18,13 @@ class InventoryPharmacyOrderResource extends JsonResource
             'id' => $this->id,
             'patient_id' => $this->patient_id,
             'doctor_id' => $this->doctor_id,
-            // 'inventory_pharmacy_id' => $this->inventory_pharmacy_id,
+            'inventory_pharmacies_id' => $this->inventory_pharmacies_id,
             'date' => $this->date,
-            'supplies' => $this->supplies,
+            // 'supplies' => $this->supplies,
             'quantity' => $this->quantity,
             'relationships' => [
                 'patient' => PatientResource::make($this->whenLoaded('patient')),
-                // 'inventory_pharmacy_id' => InventoryPharmacyResource::make($this->whenLoaded('inventory_pharmacy')),
+                'inventory_pharmacies_id' => InventoryPharmacyResource::make($this->whenLoaded('inventoryPharmacy')),
                 'doctor' => UserResource::make($this->whenLoaded('doctor')),
             ]
         ];

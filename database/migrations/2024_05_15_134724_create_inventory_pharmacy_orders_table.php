@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('inventory_pharmacy_orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('patient_id');
-            // $table->unsignedBigInteger('inventory_pharmacy_id');
+            $table->unsignedBigInteger('inventory_pharmacies_id')->nullable();
             $table->unsignedBigInteger('doctor_id')->nullable();
             $table->date('date')->nullable();
-            $table->string('supplies')->nullable();
+            // $table->string('supplies')->nullable();
             $table->string('quantity')->nullable();
             $table->timestamps();
         });

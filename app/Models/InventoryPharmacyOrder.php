@@ -10,10 +10,10 @@ class InventoryPharmacyOrder extends Model
     use HasFactory;
     protected $fillable = [
         'patient_id',
-        // 'inventory_pharmacy_id',
+        'inventory_pharmacies_id',
         'doctor_id',
         'date',
-        'supplies',
+        // 'supplies',
         'quantity',
     ];
     public function patient()
@@ -24,8 +24,8 @@ class InventoryPharmacyOrder extends Model
     {
         return $this->belongsTo(User::class, 'doctor_id');
     }
-    // public function inventoryCSR()
-    // {
-    //     return $this->belongsTo(InventoryCsr::class, 'inventory_csr_id');
-    // }
+    public function inventoryPharmacy()
+    {
+        return $this->belongsTo(InventoryPharmacy::class, 'inventory_pharmacies_id');
+    }
 }

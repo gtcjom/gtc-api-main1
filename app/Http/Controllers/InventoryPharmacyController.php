@@ -48,6 +48,11 @@ class InventoryPharmacyController extends Controller
     //         'message' => 'Patient Pharmacy Orders retrieved successfully.'
     //     ], Response::HTTP_OK);
     // }
+    public function getSupplies()
+    {
+        $supplies = InventoryPharmacy::getSupplies();
+        return response()->json($supplies);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -65,17 +70,28 @@ class InventoryPharmacyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        //
-        $stocks = new InventoryPharmacy();
-        $stocks->pharmacy_date = request()->get('pharmacy_date');
-        $stocks->pharmacy_supplies = request()->get('pharmacy_supplies');
-        $stocks->pharmacy_stocks = request()->get('pharmacy_stocks');
-        $stocks->pharmacy_price = request()->get('pharmacy_price');
-        $stocks->pharmacy_status = request()->get('pharmacy_status');
-        $stocks->save();
+        $validatedData = $request->validate([
+            'pharmacy_date' => ['required', 'date'],
+            'pharmacy_supplies' => ['required', 'string'],
+            'pharmacy_stocks' => ['required', 'integer'],
+            'pharmacy_price' => ['nullable', 'numeric'],
+            'pharmacy_status' => ['nullable', 'string'],
+        ]);
+
+        $stocks = InventoryPharmacy::create($validatedData);
+
         return InventoryPharmacyResource::make($stocks);
+        //
+        // $stocks = new InventoryPharmacy();
+        // $stocks->pharmacy_date = request()->get('pharmacy_date');
+        // $stocks->pharmacy_supplies = request()->get('pharmacy_supplies');
+        // $stocks->pharmacy_stocks = request()->get('pharmacy_stocks');
+        // $stocks->pharmacy_price = request()->get('pharmacy_price');
+        // $stocks->pharmacy_status = request()->get('pharmacy_status');
+        // $stocks->save();
+        // return InventoryPharmacyResource::make($stocks);
     }
 
     /**
@@ -86,9 +102,11 @@ class InventoryPharmacyController extends Controller
      */
     public function show(int $id)
     {
-        //
-        $stocks = InventoryPharmacy::query()->findOrFail($id);
+        $stocks = InventoryPharmacy::findOrFail($id);
         return InventoryPharmacyResource::make($stocks);
+        //
+        // $stocks = InventoryPharmacy::query()->findOrFail($id);
+        // return InventoryPharmacyResource::make($stocks);
     }
 
     /**
@@ -109,9 +127,22 @@ class InventoryPharmacyController extends Controller
      * @param  \App\Models\InventoryPharmacy  $inventoryPharmacy
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InventoryPharmacy $inventoryPharmacy)
+    public function update(Request $request, int $id)
     {
         //
+        $stocks = InventoryPharmacy::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'pharmacy_date' => ['sometimes', 'date'],
+            'pharmacy_supplies' => ['sometimes', 'string'],
+            'pharmacy_stocks' => ['sometimes', 'integer'],
+            'pharmacy_price' => ['sometimes', 'numeric'],
+            'pharmacy_status' => ['sometimes', 'string'],
+        ]);
+
+        $stocks->update($validatedData);
+
+        return InventoryPharmacyResource::make($stocks);
     }
 
     /**
