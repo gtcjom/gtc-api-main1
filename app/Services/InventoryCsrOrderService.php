@@ -56,6 +56,10 @@ class InventoryCsrOrderService
             'date' => ['nullable', 'date'],
             'quantity' => ['nullable', 'integer'],
         ]);
+        $inventoryCsr = InventoryCsr::find($validatedData['inventory_csrs_id']);
+        if ($inventoryCsr && $inventoryCsr->csr_stocks < $validatedData['quantity']) {
+            return response()->json(['error' => 'No more stocks available'], 400);
+        }
 
         $user = $request->user();
 

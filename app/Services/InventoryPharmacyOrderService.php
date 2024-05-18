@@ -54,6 +54,11 @@ class InventoryPharmacyOrderService
             'quantity' => ['nullable', 'integer'],
         ]);
 
+        $inventoryPharmacy = InventoryPharmacy::find($validatedData['inventory_pharmacies_id']);
+        if ($inventoryPharmacy && $inventoryPharmacy->pharmacy_stocks < $validatedData['quantity']) {
+            return response()->json(['error' => 'No more stocks available'], 400);
+        }
+
         $user = $request->user();
 
         $inventoryPharmacyOrder = InventoryPharmacyOrder::create(array_merge([
