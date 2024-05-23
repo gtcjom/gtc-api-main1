@@ -56,9 +56,9 @@ class OperationProcedureController extends Controller
         $user = request()->user();
         // $type = $user->type == 'HIS-ANESTHESIA'
         $operation_status = request('status');
-        if ($operation_status !== 'RESU' && $operation_status !== 'DONE') {
+        if ($operation_status !== 'Operating Room' && $operation_status !== 'RESU' && $operation_status !== 'DONE') {
             // Default to 'Operating-Room' if status parameter is neither 'RESU' nor 'DONE'
-            $operation_status = 'Operating-Room';
+            $operation_status = 'For Operation';
         }
         $pending_operation = OperationProcedure::query()
             ->where('operation_status', $operation_status)
@@ -69,26 +69,26 @@ class OperationProcedureController extends Controller
         return OperationProcedureResource::collection($pending_operation);
     }
 
-    public function sendPatientToOR($appointment_id)
-    {
-        $appointment = AppointmentData::query()->findOrFail($appointment_id);
+    // public function sendPatientToOR($appointment_id)
+    // {
+    //     $appointment = AppointmentData::query()->findOrFail($appointment_id);
 
-        $procedureOrder = OperationProcedure::query()
-            ->where('operation_status', 'Operating-Room')
-            ->where('patient_id', $appointment->patient_id)
-            ->get();
-        if ($procedureOrder->count()) {
-            $appointment->status = 'resu';
-            $appointment->save();
-        } else if ($procedureOrder->count()) {
-            $appointment->status = 'done';
-            $appointment->save();
-        }
-        return [
-            'operating_orders' => $procedureOrder,
-            'appointment' => AppointmentDataResource::make($appointment)
-        ];
-    }
+    //     $procedureOrder = OperationProcedure::query()
+    //         ->where('operation_status', 'Operating-Room')
+    //         ->where('patient_id', $appointment->patient_id)
+    //         ->get();
+    //     if ($procedureOrder->count()) {
+    //         $appointment->status = 'resu';
+    //         $appointment->save();
+    //     } else if ($procedureOrder->count()) {
+    //         $appointment->status = 'done';
+    //         $appointment->save();
+    //     }
+    //     return [
+    //         'operating_orders' => $procedureOrder,
+    //         'appointment' => AppointmentDataResource::make($appointment)
+    //     ];
+    // }
     /**
      * Show the form for creating a new resource.
      *
