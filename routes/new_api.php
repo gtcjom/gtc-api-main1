@@ -227,7 +227,7 @@ Route::middleware(['auth:api'])->prefix('v1')->group(function () {
         Route::get('doctor-patient-referrals', [AppointmentController::class, 'getDoctorPatientReferrals']);
         Route::get('sph-doctor-patient-referrals', [AppointmentController::class, 'getSphDoctorPatientReferrals']);
 
-
+        //
         Route::get('bhw-pending-service', [ReferToRHUController::class, 'getBHWPendingService']);
 
         Route::get('bhw-pending-for-medicine-release', [ReferToRHUController::class, 'getBhwPendingMedsRelease']);
@@ -235,6 +235,8 @@ Route::middleware(['auth:api'])->prefix('v1')->group(function () {
         Route::get('rhu-pending-for-medicine-release', [ReferToRHUController::class, 'getRHUPendingMedsRelease']);
 
         Route::get('sph-pending-for-medicine-release', [ReferToRHUController::class, 'getSPHPendingMedsRelease']);
+
+        Route::get('his-pending-for-medicine-release', [ReferToRHUController::class, 'getHISPendingMedsRelease']);
 
 
 
@@ -268,7 +270,10 @@ Route::middleware(['auth:api'])->prefix('v1')->group(function () {
 
         Route::get('pending-cashier', [ReferToRHUController::class, 'getPendingCashier']);
         Route::get('pending-billing', [ReferToRHUController::class, 'getPendingBilling']);
+        Route::get('pending-housekeeping', [ReferToRHUController::class, 'getPendingHousekeeping']);
         Route::patch('send-from-cashier-to-nurse-for-release/{id}', [ReferToRHUController::class, 'sendFromCashierToNurseForRelease']);
+        Route::patch('send-from-billing-to-housekeeping/{id}', [ReferToRHUController::class, 'sendFromBillingToHouseKeeping']);
+        Route::patch('send-from-housekeeping-to-cashier/{id}', [ReferToRHUController::class, 'sendFromHousekeepingToCashier']);
 
 
         Route::get('get-pending-cashier/{id}', [AppointmentController::class, 'getPatientPendingCashier']);

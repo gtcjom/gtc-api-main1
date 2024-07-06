@@ -1,17 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Clinic\Patient;
+namespace App\Http\Controllers\CLinic\Patient;
 
-use App\Events\AppointmentEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AppointmentDataResource;
-use App\Models\AnesthesiaOrder;
 use App\Models\AppointmentData;
-use App\Models\LaboratoryOrder;
 use App\Models\HealthUnit;
 use App\Models\ItemInventory;
-use App\Models\ItemUsage;
-use App\Models\OperationProcedure;
+use App\Models\LaboratoryOrder;
 use App\Models\Patient;
 use App\Models\PatientCase;
 use App\Models\User;
@@ -25,7 +21,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class ReferToRHUController extends Controller
+class ForHISController extends Controller
 {
 
 
@@ -49,27 +45,27 @@ class ReferToRHUController extends Controller
             if ($user->type == 'LMIS-CNOR') {
                 $location = HealthUnit::query()->where('type', 'CNOR')->first();
             }
-            if ($user->type == 'LMIS-CNOR') {
-                $location = HealthUnit::query()->where('type', 'CNOR')->first();
-            }
+            // if ($user->type == 'LMIS-CNOR') {
+            //     $location = HealthUnit::query()->where('type', 'CNOR')->first();
+            // }
         }
 
         return $location;
     }
 
 
-    public function approve(int $id)
-    {
-        $appointment = AppointmentData::query()->findOrFail($id);
+    // public function approve(int $id)
+    // {
+    //     $appointment = AppointmentData::query()->findOrFail($id);
 
-        $appointment->status = 'approved';
-        $appointment->save();
+    //     $appointment->status = 'approved';
+    //     $appointment->save();
 
 
-        return response()->json([
-            'message' => 'Patient referred to RHU'
-        ]);
-    }
+    //     return response()->json([
+    //         'message' => 'Patient referred to RHU'
+    //     ]);
+    // }
     public function acceptPatient(string $id, Request $request, PmrfPatientService $pmrfPatientService, PhoPatientCaseService $service)
     {
         $user = request()->user();
@@ -214,7 +210,7 @@ class ReferToRHUController extends Controller
 
         $appointment->accepted_by_id = $user->id;
         $appointment->rhu_id = $this->getRhuId()->id;
-        $appointment->status = 'in-sevince-doctor-consultation';
+        $appointment->status = 'in-service-doctor-consultation';
         $appointment->referred_to = $request->get('doctor_id');
         $appointment->room_number = $request->get('room_number');
 
@@ -225,30 +221,7 @@ class ReferToRHUController extends Controller
             'message' => 'Patient accepted!'
         ]);
     }
-
-    public function getRhuQueue()
-    {
-        $user = request()->user();
-        $appointments = AppointmentData::query()
-
-            ->where('bhs_id', 0)
-            ->where('rhu_id', $user->health_unit_id)
-            ->whereIn('status', ['pending-doctor-consultation', 'pending'])->latest()
-            ->get();
-
-        return AppointmentDataResource::collection($appointments->load([
-            'patient',
-            'bhs',
-            'rhu',
-            'tb_symptoms',
-            'vitals',
-            'socialHistory',
-            'environmentalHistory',
-        ]));
-    }
-
-
-    public function getSPHQueue()
+    public function getHISQueue()
     {
         $user = request()->user();
         $appointments = AppointmentData::query()
@@ -313,22 +286,6 @@ class ReferToRHUController extends Controller
             'count' => $appointments->count()
         ]);
     }
-    public function getCashierPending()
-    {
-        $appointments = AppointmentData::query()
-            ->where('for_cashier', 1)
-            ->with(['patient'])
-            ->get();
-        return AppointmentDataResource::collection($appointments->load([
-            'patient',
-            'bhs',
-            'rhu',
-            'tb_symptoms',
-            'vitals',
-            'socialHistory',
-            'environmentalHistory',
-        ]));
-    }
     public function getBillingPending()
     {
         $appointments = AppointmentData::query()
@@ -349,6 +306,22 @@ class ReferToRHUController extends Controller
     {
         $appointments = AppointmentData::query()
             ->where('for_housekeeping', 1)
+            ->with(['patient'])
+            ->get();
+        return AppointmentDataResource::collection($appointments->load([
+            'patient',
+            'bhs',
+            'rhu',
+            'tb_symptoms',
+            'vitals',
+            'socialHistory',
+            'environmentalHistory',
+        ]));
+    }
+    public function getCashierPending()
+    {
+        $appointments = AppointmentData::query()
+            ->where('for_cashier', 1)
             ->with(['patient'])
             ->get();
         return AppointmentDataResource::collection($appointments->load([
@@ -464,14 +437,14 @@ class ReferToRHUController extends Controller
     {
         $user = request()->user();
         // return $user->id;
-        if ($user->type == 'RHU-DOCTOR') {
+        if ($user->type == 'HIS-DOCTOR') {
 
             $appointments = AppointmentData::query()
                 ->whereIn('status', ['in-service-consultation', 'in-service-result-reading'])
                 ->where('referred_to', $user->id)
                 ->with(['patient'])
                 ->get();
-        } else if ($user->type == 'RHU-NURSE') {
+        } else if ($user->type == 'HIS-NURSE') {
             $appointments = AppointmentData::query()
                 ->whereIn('status', ['in-service-consultation', 'in-service-result-reading'])
                 ->where('rhu_id', $user->health_unit_id)
@@ -657,55 +630,30 @@ class ReferToRHUController extends Controller
             'count' => $appointments->count()
         ]);
     }
-    public function getRHUPendingMedsRelease()
-    {
-        // $user = request()->user();
-        $location = $this->getUserLocation();
-        $appointments = AppointmentData::query()
-            ->where('status', 'pending-for-rhu-release')
-            ->where('rhu_id', $location->id)
-            ->whereNotNull('prescribed_by')
-            ->whereNotNull('approved_by')
-            ->with(['patient'])
-            ->get();
-        return response()->json([
-            'data' => AppointmentDataResource::collection($appointments->load([
-                'patient',
-                'bhs',
-                'rhu',
-                'tb_symptoms',
-                'vitals',
-                'socialHistory',
-                'environmentalHistory',
-            ])),
-            'count' => $appointments->count()
-        ]);
-    }
-
-    public function getSPHPendingMedsRelease()
-    {
-        // $user = request()->user();
-        $location = $this->getUserLocation();
-        $appointments = AppointmentData::query()
-            ->where('status', 'pending-for-sph-release')
-            ->where('for_sph', 1)
-            ->whereNotNull('prescribed_by')
-            ->whereNotNull('approved_by')
-            ->with(['patient'])
-            ->get();
-        return response()->json([
-            'data' => AppointmentDataResource::collection($appointments->load([
-                'patient',
-                'bhs',
-                'rhu',
-                'tb_symptoms',
-                'vitals',
-                'socialHistory',
-                'environmentalHistory',
-            ])),
-            'count' => $appointments->count()
-        ]);
-    }
+    // public function getRHUPendingMedsRelease()
+    // {
+    //     // $user = request()->user();
+    //     $location = $this->getUserLocation();
+    //     $appointments = AppointmentData::query()
+    //         ->where('status', 'pending-for-rhu-release')
+    //         ->where('rhu_id', $location->id)
+    //         ->whereNotNull('prescribed_by')
+    //         ->whereNotNull('approved_by')
+    //         ->with(['patient'])
+    //         ->get();
+    //     return response()->json([
+    //         'data' => AppointmentDataResource::collection($appointments->load([
+    //             'patient',
+    //             'bhs',
+    //             'rhu',
+    //             'tb_symptoms',
+    //             'vitals',
+    //             'socialHistory',
+    //             'environmentalHistory',
+    //         ])),
+    //         'count' => $appointments->count()
+    //     ]);
+    // }
     public function getHISPendingMedsRelease()
     {
         // $user = request()->user();
@@ -731,26 +679,70 @@ class ReferToRHUController extends Controller
         ]);
     }
 
+    // public function getSPHPendingMedsRelease()
+    // {
+    //     // $user = request()->user();
+    //     $location = $this->getUserLocation();
+    //     $appointments = AppointmentData::query()
+    //         ->where('status', 'pending-for-sph-release')
+    //         ->where('for_sph', 1)
+    //         ->whereNotNull('prescribed_by')
+    //         ->whereNotNull('approved_by')
+    //         ->with(['patient'])
+    //         ->get();
+    //     return response()->json([
+    //         'data' => AppointmentDataResource::collection($appointments->load([
+    //             'patient',
+    //             'bhs',
+    //             'rhu',
+    //             'tb_symptoms',
+    //             'vitals',
+    //             'socialHistory',
+    //             'environmentalHistory',
+    //         ])),
+    //         'count' => $appointments->count()
+    //     ]);
+    // }
 
-    public function getRhuId()
+
+    // public function getRhuId()
+    // {
+    //     $user = request()->user();
+    //     $location = HealthUnit::first();
+    //     if ($user->health_unit_id) {
+    //         $location = HealthUnit::findOrFail($user->health_unit_id);
+    //     } else {
+
+    //         if (str_contains($user->type, 'RHU')) {
+    //             $location = HealthUnit::query()->where('type', '=', 'RHU')->where('municipality_id', '=', $user->municipality)->first();
+    //         }
+    //         if ($user->type == 'LMIS-BHS' || $user->type == 'BHS-BHW') {
+    //             $location = HealthUnit::query()->where('type', '=', 'BHS')->where('barangay_id', '=', $user->barangay)->first();
+    //         }
+    //         if ($user->type == 'LMIS-CNOR') {
+    //             $location = HealthUnit::query()->where('type', 'CNOR')->first();
+    //         }
+    //     }
+
+    //     return $location;
+    // }
+    public function getHISId()
     {
         $user = request()->user();
         $location = HealthUnit::first();
         if ($user->health_unit_id) {
             $location = HealthUnit::findOrFail($user->health_unit_id);
         } else {
+
             if (str_contains($user->type, 'HIS')) {
                 $location = HealthUnit::query()->where('type', '=', 'HIS')->where('municipality_id', '=', $user->municipality)->first();
             }
-            if (str_contains($user->type, 'RHU')) {
-                $location = HealthUnit::query()->where('type', '=', 'RHU')->where('municipality_id', '=', $user->municipality)->first();
-            }
-            if ($user->type == 'LMIS-BHS' || $user->type == 'BHS-BHW') {
-                $location = HealthUnit::query()->where('type', '=', 'BHS')->where('barangay_id', '=', $user->barangay)->first();
-            }
-            if ($user->type == 'LMIS-CNOR') {
-                $location = HealthUnit::query()->where('type', 'CNOR')->first();
-            }
+            // if ($user->type == 'LMIS-BHS' || $user->type == 'BHS-BHW') {
+            //     $location = HealthUnit::query()->where('type', '=', 'BHS')->where('barangay_id', '=', $user->barangay)->first();
+            // }
+            // if ($user->type == 'LMIS-CNOR') {
+            //     $location = HealthUnit::query()->where('type', 'CNOR')->first();
+            // }
         }
 
         return $location;
@@ -988,10 +980,10 @@ class ReferToRHUController extends Controller
         $appointment->expiry_date_crossmatch = $request->get('expiry_date_crossmatch');
         $appointment->cossmatching_result_crossmatch = $request->get('cossmatching_result_crossmatch');
 
-        // $appointment->rhu_ultrasound_result = $request->get('rhu_ultrasound_result');
-        // $appointment->rhu_ultrasound_remarks = $request->get('rhu_ultrasound_remarks');
-        // $appointment->rhu_xray_result = $request->get('rhu_xray_result');
-        // $appointment->rhu_xray_remarks = $request->get('rhu_xray_remarks');
+        $appointment->rhu_ultrasound_result = $request->get('rhu_ultrasound_result');
+        $appointment->rhu_ultrasound_remarks = $request->get('rhu_ultrasound_remarks');
+        $appointment->rhu_xray_result = $request->get('rhu_xray_result');
+        $appointment->rhu_xray_remarks = $request->get('rhu_xray_remarks');
 
 
 
@@ -1158,7 +1150,6 @@ class ReferToRHUController extends Controller
         $appointment = AppointmentData::query()->findOrFail($id);
         $appointment->status = 'pending-doctor-consultation';
         $appointment->referred_to = $request->get('doctor_id');
-        $appointment->room_number = $request->get('room_number');
         $appointment->serviced_by = request()->user()->id;
 
         if ($request->get('rhu_id')) {
@@ -1186,7 +1177,8 @@ class ReferToRHUController extends Controller
         } else {
             $appointment->status = 'in-service-consultation';
         }
-        $appointment->for_cashier = 1;
+        // $appointment->for_cashier = 1;
+        $appointment->for_billing = 1;
         $appointment->save();
 
         return response()->json([
@@ -1448,7 +1440,7 @@ class ReferToRHUController extends Controller
         $appointment->selfie = $request->file('selfie')->store('selfies');
         $appointment->is_done = 1;
 
-        if ($user->type == 'SPH-PHAR') {
+        if ($user->type == 'HIS-PHARMACY') {
             $appointment->status = 'pending-for-billing';
         } else {
             $appointment->status = 'done';
@@ -1480,29 +1472,6 @@ class ReferToRHUController extends Controller
 
         return AppointmentDataResource::make($appointment);
     }
-    public function sendToBilling($id)
-    {
-        $appointment = AppointmentData::query()->findOrFail($id);
-        $appointment->status = 'pending-for-billing';
-        $appointment->cleared = 1;
-
-        $appointment->released_by = request()->user()->id;
-        $appointment->save();
-
-        return AppointmentDataResource::make($appointment);
-    }
-
-    public function sendToHousekeeping($id)
-    {
-        $appointment = AppointmentData::query()->findOrFail($id);
-        $appointment->status = 'pending-for-housekeeping';
-        $appointment->cleared = 1;
-
-        $appointment->released_by = request()->user()->id;
-        $appointment->save();
-
-        return AppointmentDataResource::make($appointment);
-    }
 
     public function sendToCashier($id)
     {
@@ -1515,35 +1484,10 @@ class ReferToRHUController extends Controller
 
         return AppointmentDataResource::make($appointment);
     }
-
-    public function sendFromBillingToHouseKeeping($id)
-    {
-        $appointment = AppointmentData::query()->findOrFail($id);
-        $appointment->status = 'pending-for-housekeeping';
-        $appointment->cleared = 1;
-
-        $appointment->approved_by = request()->user()->id;
-        $appointment->released_by = request()->user()->id;
-        $appointment->save();
-
-        return AppointmentDataResource::make($appointment);
-    }
-    public function sendFromHousekeepingToCashier($id)
-    {
-        $appointment = AppointmentData::query()->findOrFail($id);
-        $appointment->status = 'pending-for-cashier';
-        $appointment->cleared = 1;
-
-        $appointment->approved_by = request()->user()->id;
-        $appointment->released_by = request()->user()->id;
-        $appointment->save();
-
-        return AppointmentDataResource::make($appointment);
-    }
     public function sendFromCashierToNurseForRelease($id)
     {
         $appointment = AppointmentData::query()->findOrFail($id);
-        $appointment->status = 'pending-for-his-release';
+        $appointment->status = 'pending-for-rhu-release';
         $appointment->cleared = 1;
 
         $appointment->approved_by = request()->user()->id;
@@ -1639,49 +1583,12 @@ class ReferToRHUController extends Controller
 
     public function getPendingBilling()
     {
-        $user = request()->user();
+        // $user = request()->user();
         // $location = $this->getUserLocation();
-        // $appointments = AppointmentData::query()
-        //     ->where('status', 'pending-for-billing')
-        //     ->with(['patient'])
-        //     ->get();
-        if ($user->type == 'HIS-BILLING') {
-            $appointments = AppointmentData::query()
-                ->whereIn('status', ['pending-for-billing', 'pending-for-billing-release'])
-                ->where('for_sph', 1)
-                ->with(['patient'])
-                ->latest()
-                ->get();
-        }
-        return response()->json([
-            'data' => AppointmentDataResource::collection($appointments->load([
-                'patient',
-                'bhs',
-                'rhu',
-                'tb_symptoms',
-                'vitals',
-                'socialHistory',
-                'environmentalHistory',
-            ])),
-            'count' => $appointments->count()
-        ]);
-    }
-    public function getPendingHousekeeping()
-    {
-        $user = request()->user();
-        // $location = $this->getUserLocation();
-        // $appointments = AppointmentData::query()
-        //     ->where('status', 'pending-for-billing')
-        //     ->with(['patient'])
-        //     ->get();
-        if ($user->type == 'HIS-HOUSEKEEPING') {
-            $appointments = AppointmentData::query()
-                ->whereIn('status', ['pending-for-housekeeping', 'pending-for-housekeeping-release'])
-                ->where('for_sph', 1)
-                ->with(['patient'])
-                ->latest()
-                ->get();
-        }
+        $appointments = AppointmentData::query()
+            ->where('status', 'pending-for-billing')
+            ->with(['patient'])
+            ->get();
         return response()->json([
             'data' => AppointmentDataResource::collection($appointments->load([
                 'patient',
@@ -1712,14 +1619,6 @@ class ReferToRHUController extends Controller
             $appointments = AppointmentData::query()
                 ->whereIn('status', ['pending-for-cashier', 'pending-for-cashier-release'])
                 ->where('rhu_id', $user->health_unit_id)
-                ->with(['patient'])
-                ->latest()
-                ->get();
-        }
-        if ($user->type == 'HIS-CASHIER') {
-            $appointments = AppointmentData::query()
-                ->whereIn('status', ['pending-for-cashier', 'pending-for-cashier-release'])
-                ->where('for_sph', 1)
                 ->with(['patient'])
                 ->latest()
                 ->get();

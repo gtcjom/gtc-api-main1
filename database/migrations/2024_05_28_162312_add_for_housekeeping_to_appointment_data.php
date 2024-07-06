@@ -14,9 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('appointment_data', function (Blueprint $table) {
-            $table->string('mode_of_consultation')->default(null)->nullable();
-            $table->string('phic_no')->default(null)->nullable();
             //
+            $table->boolean('for_housekeeping')->default(0);
         });
     }
 
@@ -29,8 +28,7 @@ return new class extends Migration
     {
         Schema::table('appointment_data', function (Blueprint $table) {
             //
-            $table->dropColumn('mode_of_consultation');
-            $table->dropColumn('phic_no');
+            $table->dropColumn('for_housekeeping');
         });
     }
 };

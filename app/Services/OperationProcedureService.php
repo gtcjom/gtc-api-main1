@@ -42,6 +42,8 @@ class OperationProcedureService
             'procedure' => ['required', 'string'],
             'operation_notes' => ['nullable', 'string'],
             'operation_status' => ['required', 'string'],
+            'surgeon' => ['required', 'string'],
+            'anesthesiologist' => ['required', 'string'],
             'doctor_id' => ['nullable'],
             'appointment_id' => ['nullable'],
         ]);
@@ -59,6 +61,8 @@ class OperationProcedureService
             'appointment_id' => $request->appointment_id,
             'operation_time' => $request->operation_time,
             'procedure' => $request->procedure,
+            'surgeon' => $request->surgeon,
+            'anesthesiologist' => $request->anesthesiologist,
             'operation_notes' => $request->operation_notes,
             'doctor_id' => $user->doctor_id,
             'health_unit_id' => $user->health_unit_id,

@@ -25,6 +25,7 @@ function userTypes(): array
         'RHU-PHAR',
         'RHU-LAB',
         'RHU-XRAY',
+        'HIS-IMAGING',
         'SPH-NURSE',
         'SPH-DOCTOR',
         'SPH-PHAR',

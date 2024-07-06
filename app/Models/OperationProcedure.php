@@ -14,6 +14,8 @@ class OperationProcedure extends Model
         'operation_date',
         'operation_time',
         'procedure',
+        'surgeon',
+        'anesthesiologist',
         'operation_notes',
         'doctor_id',
         'operation_status',

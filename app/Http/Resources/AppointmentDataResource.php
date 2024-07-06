@@ -107,6 +107,8 @@ class AppointmentDataResource extends JsonResource
             'item_used' => $this->item_used,
 
             'for_anesthesia' => $this->for_anesthesia,
+            'for_billing' => $this->for_billing,
+            'for_housekeeping' => $this->for_housekeeping,
         ];
     }
 }

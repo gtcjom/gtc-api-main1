@@ -22,7 +22,9 @@ return new class extends Migration
             $table->time('operation_time')->nullable();
             $table->string('procedure_test_type')->nullable();
             $table->string('procedure')->nullable();
-            $table->string('operation_notes')->nullable();
+            $table->text('operation_notes')->nullable();
+            $table->string('surgeon')->nullable();
+            $table->string('anesthesiologist')->nullable();
             $table->unsignedBigInteger('doctor_id')->nullable();
             $table->string('operation_status')->nullable();
             $table->foreignId('health_unit_id')->default(null)->nullable();

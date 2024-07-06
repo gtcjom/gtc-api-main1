@@ -49,7 +49,7 @@ class LaboratoryOrderController extends Controller
     public function getLaboratoryQueue()
     {
         $user = request()->user();
-        $type = ($user->type == 'RHU-XRAY' || $user->type == 'SPH-XRAY') ? 'imaging' : 'laboratory-test';
+        $type = ($user->type == 'RHU-XRAY' || $user->type == 'SPH-XRAY' || $user->type == 'HIS-IMAGING') ? 'imaging' : 'laboratory-test';
         $lab_test_ids = LaboratoryTest::query()->where('type', $type)->pluck('id');
 
         $pending_tests = LaboratoryOrder::query()

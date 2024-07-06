@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('csir_specimen_type', 10)->default(null)->nullable();
             $table->string('csir_specimen_source', 10)->default(null)->nullable();
             $table->string('csir_result', 10)->default(null)->nullable();
-            $table->string('csir_remarks', 20)->default(null)->nullable();
+            $table->string('csir_remarks', 10)->default(null)->nullable();
         });
     }
 

@@ -135,6 +135,9 @@ class AppointmentController extends Controller
             $appointment->rhu_id = 0;
             $appointment->for_sph = 1;
         }
+        if ($user->type == 'HIS-ER') {
+            $appointment->for_sph = 1;
+        }
         if ($request->bhs_id) {
             $appointment->bhs_id = $request->bhs_id;
         }
@@ -148,7 +151,7 @@ class AppointmentController extends Controller
         $appointment->phic_no = $request->phic_no;
         $appointment->pre_notes = $request->notes;
         $appointment->post_notes = $request->disease;
-        $appointment->patient_selfie = $request->file('patient_selfie')->store('patient_selfie');
+        // $appointment->patient_selfie = $request->file('patient_selfie')->store('patient_selfie');
 
         $appointment->status = 'pending';
         $appointment->save();
@@ -292,9 +295,12 @@ class AppointmentController extends Controller
         $appointment = AppointmentData::query()->findOrFail($id);
         if ($appointment->bhs_id > 0) {
 
-            $appointment->status = 'pending-for-bhw-release';
+            $appointment->status = 'pending-for-billing-release';
         } else if ($appointment->rhu_id > 0) {
-            $appointment->status = 'pending-for-cashier-release';
+            $appointment->status = 'pending-for-billing-release';
+            // $appointment->status = 'pending-for-rhu-release';
+        } else if ($appointment->for_sph > 1) {
+            $appointment->status = 'pending-for-billing-release';
             // $appointment->status = 'pending-for-rhu-release';
         }
         $appointment->approved_by = request()->user()->id;
@@ -302,7 +308,7 @@ class AppointmentController extends Controller
         $appointment->save();
 
         $case = PatientCase::query()->where('appointment_id', $id)->first();
-        if ($appointment->status == 'pending-for-bhw-release') {
+        if ($appointment->status == 'pending-for-billing-release') {
             $case->status = 'service-done';
             $case->save();
             $service->updateCaseCloud($case->id, [
@@ -324,7 +330,7 @@ class AppointmentController extends Controller
 
 
         $data = [
-            'status' => 'pending-for-bhw-release',
+            'status' => 'pending-for-billing-release',
             'approved_by_name' => $user->name,
         ];
 

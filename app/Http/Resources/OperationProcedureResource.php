@@ -24,6 +24,8 @@ class OperationProcedureResource extends JsonResource
             'health_unit_id' => $this->health_unit_id,
             'operation_time' => $this->operation_time,
             'operation_notes' => $this->operation_notes,
+            'surgeon' => $this->surgeon,
+            'anesthesiologist' => $this->anesthesiologist,
             'procedure' => $this->procedure,
             'operation_status' => $this->operation_status,
             'relationships' => [
